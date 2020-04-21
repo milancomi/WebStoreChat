@@ -34,8 +34,7 @@ class SendRegisterMailJob implements ShouldQueue
     {
         $u_name = $this->user_data['user_name'];
         $u_mail =$this->user_data['user_email'];
-        Mail::to($u_mail)
-        ->send(new RegistrationMail($u_name));
+        Mail::to($u_mail)->send(new RegistrationMail($u_name));
 
     }
 }

@@ -30,7 +30,7 @@ class RegistrationMail extends Mailable
     public function build()
     {
 
-       return $this->from('milancomi96@gmail.com')
+       return $this->from('cloudfilesystemtest@gmail.com')
        ->subject('Welcome notification')
        ->view('mail.registration_email_template')
        ->with('data',$this->data);

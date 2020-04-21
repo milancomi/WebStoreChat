@@ -71,7 +71,7 @@ class RegisterController extends Controller
             'user_email' => $data['email'],
         ];
 
-        $job = (new SendRegisterMailJob($mail_info))->delay(Carbon::now());
+        $job = (new SendRegisterMailJob($mail_info))->delay(Carbon::now()->addSeconds(7));
         dispatch($job);
 
         return User::create([
