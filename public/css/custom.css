@@ -1,0 +1,10 @@
+.loginBtn{
+    height:40px !important;
+
+border-width: 0;
+background-color: transparent;
+}
+.loginBtn img{
+
+    max-width: 70%;
+}
