@@ -1,5 +1,15 @@
 @extends('layouts.app')
+@section('script')
+<script src="https://cdn.tiny.cloud/1/wsx160zd1et99qm1988cicdr1wf08ok9i4i8xj62jc3qg1wk/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
+<script>
+tinymce.init({
+  selector:'textarea',
+  plugins: "link code",
+  });
+
+</script>
+@endsection
 @section('content')
   <div class="container">
     <h1>New Post</h1>

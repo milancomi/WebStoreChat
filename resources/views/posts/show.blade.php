@@ -11,7 +11,7 @@
     @endif
     <hr />
     <p class="lead">
-      {{ $post->content }}
+      {!! $post->content !!}
     </p>
     <hr />
 

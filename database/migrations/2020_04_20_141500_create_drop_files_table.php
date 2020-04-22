@@ -18,6 +18,8 @@ class CreateDropfilesTable extends Migration
             $table->string('file_title');
             $table->string('file_type');
             $table->string('file_size');
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('post_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -129,6 +129,7 @@ Route::get('drop/{id}/destroy','DropfileController@destroy');
 
 /// END DROPBOX
 
+Route::get('texteditor','SummernoteController@index');
 
 
 

@@ -24,10 +24,10 @@
 
 </head>
 <body>
+    @yield('script')
+
     <script type="text/javascript">
         window.userData= {!! json_encode(Auth::user()) !!};
-
-
     </script>
             {{-- <script type="text/javascript"> window.Laravel = {{csrf_token()}},]);></script> --}}
 

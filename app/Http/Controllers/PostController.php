@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\DropFile;
 use Illuminate\Http\Request;
 use App\Post;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    
+    public $dropbox;
     public function __construct()
     {
       $this->middleware('auth', ['except' => ['show']]);
+      $this->dropbox = Storage::disk('dropbox')->getDriver()->getAdapter()->getClient();
+
     }
 
     /**
@@ -54,6 +60,32 @@ class PostController extends Controller
         'content' => $request->content,
         'published' => $request->has('published')
       ]);
+
+      if($request->hasFile('upload_file')){
+
+        
+        
+        $file = $request->file('upload_file');
+            $fileOriginalName = $file->getClientOriginalName();          
+            $fileExtension  = $file->getClientOriginalExtension();
+            $fileName = basename($fileOriginalName,'.'.$fileExtension);
+            $mimeType       = $file->getMimeType();
+            $fileSize       = $file->getMaxFilesize();
+            $newName        = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
+           
+            Storage::disk('dropbox')->putFileAs("public/upload/$user->id/$post->id/",$file, $newName);
+
+            $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id/$post->id/".$newName);
+            $drop_file = $post->files()->create([
+              'user_id'=> $user->id,
+              'file_title'=>$newName,
+              'file_type'=>$mimeType,
+              'file_size'=>$fileSize
+            ]);
+      
+    }
+
+////////////////////////////////////
 
       return redirect()->route('posts.show', $post->id);
     }
