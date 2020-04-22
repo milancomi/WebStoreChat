@@ -48,6 +48,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
       $this->validate($request, [
         'title' => 'required|max:255',
         'content' => 'required',
@@ -63,10 +64,12 @@ class PostController extends Controller
 
       if($request->hasFile('upload_file')){
 
+
+
         
         
         $file = $request->file('upload_file');
-            $fileOriginalName = $file->getClientOriginalName();          
+        $fileOriginalName = $file->getClientOriginalName();          
             $fileExtension  = $file->getClientOriginalExtension();
             $fileName = basename($fileOriginalName,'.'.$fileExtension);
             $mimeType       = $file->getMimeType();
@@ -86,7 +89,7 @@ class PostController extends Controller
     }
 
 ////////////////////////////////////
-
+return response()->json('RADIIIIIIIIIIIIIIII');
       return redirect()->route('posts.show', $post->id);
     }
 

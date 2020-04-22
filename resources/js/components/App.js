@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 // import MediaHandler from '../MediaHandler';
 // import Pusher from 'pusher-js';
 // import Peer from 'simple-peer';
+import ModalComponent from '../components/ModalComponent';
+
 import ComponentOne from '../components/ComponentOne';
 const APP_KEY = '83c9614fa128f8d6027a';
 
@@ -131,8 +133,9 @@ export default class App extends Component {
 render() {
     return (
         <div className="App">
-            <h1>Component one</h1>
-                    <ComponentOne count={5} userId={this.state.id} />
+                    <ModalComponent/>        
+                    {/* <ComponentOne count={5} userId={this.state.id} /> */}
+
                        </div>
     );
 }
