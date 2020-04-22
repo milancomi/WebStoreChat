@@ -125,5 +125,15 @@ Route::get('drop/{filetitle}','DropfileController@show');
 Route::get('drop/{filetitle}/download','DropfileController@download');
 Route::get('drop/{id}/destroy','DropfileController@destroy');
 
+
+
 /// END DROPBOX
 
+
+
+
+
+Route::get('drop/{filetitle}','DropfileController@show');
+
+Route::get('/fmsg','HomeController@messages');
+Route::get('/fmsgShow','HomeController@messagee')->name('messageRoute');

@@ -71,24 +71,25 @@
                             </div>
                         </div>
                     </form>
-
-                    <div class="form-group row mt-5">
+                        <div class=" mt-5 col-md-4 offset-md-4">Social media authorization: <i class="fas fa-clipboard-check"></i>
+                        </div>
+                    <div class="form-group row">
                         <a href="{{route('facebook-login')}}"class="loginBtn">
                             <div class="col-md-6 offset-md-4">
                                 <img src="{{asset('/img/facebook-sign.png')}}" alt="Snow">
                             </div>
                         </a>
                     </div>
-
-                    <div class="form-group row pt-0">
+   
+                                            <div class="form-group row pt-0">
                         <a href="{{route('google-login')}}"class="loginBtn">
 
                             <div class="col-md-6 offset-md-4">
-                                <img src="{{asset('/img/google+-sign.png')}}" alt="Snow">
+                                <img src="{{asset('/img/google-sign.png')}}" alt="Snow">
                             </div>
                         </a>
 
-                        <div class="form-group row mt-2 pt-1">
+                        <div class="form-group row mt-1 pt-1 pl-2 pr-2">
                         <a href="{{route('linkedin-login')}}"class="loginBtn">
                                 <div class="col-md-6 offset-md-4">
                                     <img src="{{asset('/img/linkedin-sign.png')}}" alt="Snow">
@@ -97,6 +98,8 @@
                             </a>
 
                         </div>
+                    </div>
+
                         {{-- </div>
                     <div class="row mt-5">
 <div class="col-md-4">

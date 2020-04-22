@@ -82,7 +82,7 @@ class LoginController extends Controller
         if($findUser){
 
             Auth::login($findUser);
-            return redirect()->route('home');
+            return redirect()->route('home')->with('success','You logged in with facebook,explore now !'); 
 
         }else{
 
@@ -94,7 +94,7 @@ class LoginController extends Controller
         $user->save();
         //  !!!!!!!!!!!!!!!!!!
          Auth::login($user);
-         return redirect()->route('home'); // with -flash message
+         return redirect()->route('home')->with('success','You logged in with facebook,explore now !'); 
 
         }
 
@@ -116,7 +116,7 @@ class LoginController extends Controller
         if($findUser){
 
             Auth::login($findUser);
-            return redirect()->route('home');
+            return redirect()->route('home')->with('success','You logged in with LinkedIn,explore now !'); ;
 
         }else{
 
@@ -128,7 +128,7 @@ class LoginController extends Controller
         $user->save();
         //  !!!!!!!!!!!!!!!!!!
          Auth::login($user);
-         return redirect()->route('home');
+         return redirect()->route('home')->with('success','You logged in with LinkedIn,explore now !'); ;
 
         }
 
@@ -148,7 +148,7 @@ class LoginController extends Controller
         if($findUser){
 
             Auth::login($findUser);
-            return redirect()->route('home');
+            return redirect()->route('home')->with('success','You logged in with Google+,explore now !'); ;
 
         }else{
 
@@ -160,7 +160,7 @@ class LoginController extends Controller
         $user->save();
         //  !!!!!!!!!!!!!!!!!!
          Auth::login($user);
-         return redirect()->route('home');
+         return redirect()->route('home')->with('success','You logged in with Google+,explore now !'); ;
 
         }
 

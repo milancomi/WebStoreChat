@@ -25,6 +25,7 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "@fortawesome/free-solid-svg-icons": "^5.13.0",
         "laravel-echo": "^1.7.0",
         "pusher-js": "^5.1.1",
         "socket.io-client": "^2.3.0"
