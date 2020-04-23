@@ -4,14 +4,21 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 export default class ModalComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { modal: false,title: '',content :'' ,published:false,upload_file:[]};
+    this.state = { 
+        modal: false,
+        title: '',
+        content :'' ,
+        published:false,
+        upload_file:[],
+        loading: props.loading,
+    };
 
     this.toggle = this.toggle.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeContent = this.handleChangeContent.bind(this);
     this.handleChangePublished = this.handleChangePublished.bind(this);
     this.handleChangeFile = this.handleChangeFile.bind(this);
-
+    this.loadingStatus = this.loadingStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -32,26 +39,40 @@ export default class ModalComponent extends React.Component {
   handleChangeFile(event) {
     this.setState({upload_file: event.target.value});
   }
+  
+  loadingStatus(bool) { 
+    this.props.onChange(bool);
+        this.setState({loading: bool.value
+        });
+    console.log(bool);
+    }
 
 
   handleSubmit(event) {
     event.preventDefault();
+
+
+    this.loadingStatus(true);
+    
     const form = {
         title: this.state.title,
         content: this.state.content,
         published: this.state.published,
         upload_file: this.state.upload_file
 
-
       }
+      this.setState({
+        modal: !this.state.modal
+      });
       
       let uri = 'http://localhost:8000/posts';
       
       axios.post(uri, form).then((response) => {
-       this.setState({
-          modal: !this.state.modal
-        });
+        this.loadingStatus(false);
+
+
       });
+        
       
     }
   
@@ -61,14 +82,13 @@ export default class ModalComponent extends React.Component {
     return (
 
         <div>
-        <Button color="primary" onClick={this.toggle}>Post +</Button>
+        <Button color="primary" className="col-md-2 offset-md-5" onClick={this.toggle}>Post +</Button>
 
         <Modal isOpen={this.state.modal}>
         <form onSubmit={this.handleSubmit}>
           <ModalHeader>Add new Post</ModalHeader>
-        
-          <ModalBody>
 
+          <ModalBody>
           <div className="form-group">
         <label htmlFor="post_title">Title</label>
         <input type="text" className="form-control" onChange={this.handleChangeTitle} id="post_title" name="title" placeholder="Title"/>
@@ -93,7 +113,6 @@ export default class ModalComponent extends React.Component {
           </ModalBody>
           <ModalFooter>
           <input type="submit" value="Submit" color="primary" className="btn btn-primary" />
-
             <Button color="danger" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
           </form>

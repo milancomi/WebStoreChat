@@ -91312,8 +91312,11 @@ var App = /*#__PURE__*/function (_Component) {
     _this = _super.call(this);
     var id = document.getElementById('app').attributes['data-user-id'].value;
     _this.state = {
-      id: id
-    }; // this.user.stream = null;
+      id: id,
+      loading: false,
+      posts: null
+    };
+    _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this)); // this.user.stream = null;
     // this.peers = {};
     // this.mediaHandler = new MediaHandler();
     // this.setupPusher();
@@ -91406,11 +91409,28 @@ var App = /*#__PURE__*/function (_Component) {
 
 
   _createClass(App, [{
+    key: "changeLoading",
+    value: function changeLoading(bool) {
+      this.setState({
+        loading: bool
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "App"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        loading: this.state.loading,
+        onChange: this.changeLoading
+      }), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "blink col-md-6 offset-md-5"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        style: {
+          fontSize: "200px"
+        },
+        className: "fa fa-refresh fa-5x fa-spin"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Uploading content")) : "POSTS");
     }
   }, {
     key: "componentDidMount",
@@ -91661,13 +91681,15 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       title: '',
       content: '',
       published: false,
-      upload_file: []
+      upload_file: [],
+      loading: props.loading
     };
     _this.toggle = _this.toggle.bind(_assertThisInitialized(_this));
     _this.handleChangeTitle = _this.handleChangeTitle.bind(_assertThisInitialized(_this));
     _this.handleChangeContent = _this.handleChangeContent.bind(_assertThisInitialized(_this));
     _this.handleChangePublished = _this.handleChangePublished.bind(_assertThisInitialized(_this));
     _this.handleChangeFile = _this.handleChangeFile.bind(_assertThisInitialized(_this));
+    _this.loadingStatus = _this.loadingStatus.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -91708,22 +91730,33 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "loadingStatus",
+    value: function loadingStatus(bool) {
+      this.props.onChange(bool);
+      this.setState({
+        loading: bool.value
+      });
+      console.log(bool);
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
       var _this2 = this;
 
       event.preventDefault();
+      this.loadingStatus(true);
       var form = {
         title: this.state.title,
         content: this.state.content,
         published: this.state.published,
         upload_file: this.state.upload_file
       };
+      this.setState({
+        modal: !this.state.modal
+      });
       var uri = 'http://localhost:8000/posts';
       axios.post(uri, form).then(function (response) {
-        _this2.setState({
-          modal: !_this2.state.modal
-        });
+        _this2.loadingStatus(false);
       });
     }
   }, {
@@ -91731,6 +91764,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "primary",
+        className: "col-md-2 offset-md-5",
         onClick: this.toggle
       }, "Post +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
         isOpen: this.state.modal

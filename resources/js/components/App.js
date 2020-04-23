@@ -13,11 +13,12 @@ export default class App extends Component {
         super();
         const id = document.getElementById('app').attributes['data-user-id'].value;
          this.state = {
-            id: id
-
+            id: id,
+            loading:false,
+            posts:null
          };
 
-
+         this.changeLoading = this.changeLoading.bind(this);
 
         // this.user.stream = null;
         // this.peers = {};
@@ -129,13 +130,20 @@ export default class App extends Component {
 //         );
 //     }
 
+changeLoading(bool){
+    this.setState({
+        loading:bool
+    });
+}
 
 render() {
     return (
         <div className="App">
-                    <ModalComponent/>        
+                    <ModalComponent loading={this.state.loading} onChange={this.changeLoading}/>        
                     {/* <ComponentOne count={5} userId={this.state.id} /> */}
+                    {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}
 
+            {this.state.loading ?  <div className="blink col-md-6 offset-md-5"><i style={{fontSize: "200px"}}className="fa fa-refresh fa-5x fa-spin"></i><br/><h1>Uploading content</h1></div> : "POSTS"}
                        </div>
     );
 }
