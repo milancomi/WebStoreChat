@@ -146,6 +146,7 @@ render() {
                        </div>
     );
 }
+/*
 componentDidMount(){
 
 
@@ -156,16 +157,14 @@ componentDidMount(){
     channel.listen('.UserEvent', function (data){
         console.log(data);
     });
-    /*
-    window.axios.get('http://bestof.test/axiosGet')
-    .then(res => {
-    //   this.setState({ persons });
-        console.log(res.data);
-        console.log("testt");
+
 });
+
+
+
 */
 }
-}
+
 
 
 

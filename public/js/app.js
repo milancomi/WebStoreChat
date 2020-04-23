@@ -91431,23 +91431,24 @@ var App = /*#__PURE__*/function (_Component) {
         className: "fa fa-refresh fa-5x fa-spin"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Uploading content")) : "POSTS");
     }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var id = document.getElementById('app').attributes['data-user-id'].value;
-      var channel = Echo["private"]("user.".concat(id));
-      channel.listen('.UserEvent', function (data) {
-        console.log(data);
-      });
-      /*
-      window.axios.get('http://bestof.test/axiosGet')
-      .then(res => {
-      //   this.setState({ persons });
-          console.log(res.data);
-          console.log("testt");
-      });
-      */
-    }
+    /*
+    componentDidMount(){
+    
+    
+        const id = document.getElementById('app').attributes['data-user-id'].value;
+    
+        let channel = Echo.private(`user.${id}`);
+    
+        channel.listen('.UserEvent', function (data){
+            console.log(data);
+        });
+    
+    });
+    
+    
+    
+    */
+
   }]);
 
   return App;
@@ -91764,6 +91765,23 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }).then(this.loadingStatus(false));
     }
   }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var id = document.getElementById('app').attributes['data-user-id'].value;
+      var channel = Echo["private"]("user.".concat(id));
+      channel.listen('.UserEvent', function (data) {
+        console.log(data);
+      });
+      /*
+      window.axios.get('http://bestof.test/axiosGet')
+      .then(res => {
+      //   this.setState({ persons });
+          console.log(res.data);
+          console.log("testt");
+      });
+      */
+    }
+  }, {
     key: "render",
     value: function render() {
       console.log(this.state.posts);
@@ -91825,7 +91843,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Posts"), this.state.posts.length == 0 ? null : this.state.posts.map(function (posts) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: posts.id,
-          className: "card col col-lg-4 mt-3"
+          className: "card col col-lg-4 mt-3 offset-md-1"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "card-body"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
@@ -91838,7 +91856,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           "class": "fa icon-4x text-danger fa-heart",
           "aria-hidden": "true"
-        }))));
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "PICTURE FIELD"));
       })));
     }
   }]);

@@ -84,7 +84,25 @@ export default class ModalComponent extends React.Component {
     }
   
 
+    componentDidMount(){
 
+
+      const id = document.getElementById('app').attributes['data-user-id'].value;
+  
+      let channel = Echo.private(`user.${id}`);
+  
+      channel.listen('.UserEvent', function (data){
+          console.log(data);
+      });
+      /*
+      window.axios.get('http://bestof.test/axiosGet')
+      .then(res => {
+      //   this.setState({ persons });
+          console.log(res.data);
+          console.log("testt");
+  });
+  */
+  }
   render() {
     console.log(this.state.posts);
 
@@ -134,12 +152,13 @@ export default class ModalComponent extends React.Component {
             ? null
             : this.state.posts.map(posts => (
               
-<div key={posts.id} className="card col col-lg-4 mt-3">
+<div key={posts.id} className="card col col-lg-4 mt-3 offset-md-1">
 <div className="card-body">
   <h5 className="card-title">{posts.title}</h5>
   <p className="card-text">{posts.content}</p>
   <a href="#" className="btn bg-light rounded-circle"><i class="fa icon-4x text-danger fa-heart" aria-hidden="true"></i></a>
 </div>
+<div>PICTURE FIELD</div>
 </div>
 
             ))
