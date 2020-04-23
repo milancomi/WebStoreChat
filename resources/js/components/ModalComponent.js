@@ -161,12 +161,14 @@ export default class ModalComponent extends React.Component {
 
         <div>
         <h1>Posts</h1>
+        <div className="container-fluid">
         {
           this.state.posts.length == 0
             ? null
             : this.state.posts.map(posts => (
-              
-<div key={posts.id} className="card col col-lg-4 mt-3 offset-md-1">
+              <div>
+
+<div key={posts.id} className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
 <div className="card-body">
   <h5 className="card-title">{posts.title}</h5>
   <p className="card-text">{posts.content}</p>
@@ -175,12 +177,13 @@ export default class ModalComponent extends React.Component {
 <div>PICTURE FIELD</div>
 </div>
 
+</div>
             ))
         }
+        </div>
       </div>
 
-        </div>
-
+      </div>
       
     );
   }
