@@ -72,12 +72,15 @@ export default class ModalComponent extends React.Component {
       
       axios.post(uri, form)
       .then((response) =>{
+        console.log(response.data.postData);
         this.setState({posts: response.data.postData})
+                this.loadingStatus(false);
+
       })
       .catch(function(error){
         console.log(error);
-      })
-          .then(this.loadingStatus(false));
+      });
+
 
 
       
@@ -89,10 +92,22 @@ export default class ModalComponent extends React.Component {
 
       const id = document.getElementById('app').attributes['data-user-id'].value;
   
-      let channel = Echo.private(`user.${id}`);
+      let channel = Echo.channel('posts');
   
-      channel.listen('.UserEvent', function (data){
-          console.log(data);
+      channel.listen('.postE', (data) =>{
+        console.log(data);
+        this.setState({posts:[data.post, ...this.state.posts]})
+
+       /* this.setState({posts: [0].concat(this.state.statusData)})
+*/
+
+
+
+
+
+
+
+
       });
       /*
       window.axios.get('http://bestof.test/axiosGet')
@@ -104,7 +119,6 @@ export default class ModalComponent extends React.Component {
   */
   }
   render() {
-    console.log(this.state.posts);
 
     return (
 
@@ -156,7 +170,7 @@ export default class ModalComponent extends React.Component {
 <div className="card-body">
   <h5 className="card-title">{posts.title}</h5>
   <p className="card-text">{posts.content}</p>
-  <a href="#" className="btn bg-light rounded-circle"><i class="fa icon-4x text-danger fa-heart" aria-hidden="true"></i></a>
+  <a href="#" className="btn bg-light rounded-circle"><i className="fa icon-4x text-danger fa-heart" aria-hidden="true"></i></a>
 </div>
 <div>PICTURE FIELD</div>
 </div>

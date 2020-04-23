@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DropFile;
+use App\Events\PostCreatedEvent;
 use Illuminate\Http\Request;
 use App\Post;
 use Auth;
@@ -88,6 +89,9 @@ class PostController extends Controller
       
     }
 
+
+    $evePost = Post::where('id',$post->id)->with('files')->first();
+    event(new PostCreatedEvent($evePost));
       $all_posts = Post::latest()->take(5)->with('files')->get();
       // $all_posts = Post::with('files')->latest()->take(5)->get();
 
