@@ -15,7 +15,6 @@ export default class App extends Component {
          this.state = {
             id: id,
             loading:false,
-            posts:null
          };
 
          this.changeLoading = this.changeLoading.bind(this);

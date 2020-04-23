@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+// import Posts from '../components/Posts';
 
 export default class ModalComponent extends React.Component {
   constructor(props) {
@@ -7,11 +8,13 @@ export default class ModalComponent extends React.Component {
     this.state = { 
         modal: false,
         title: '',
+        posts:[],
         content :'' ,
         published:false,
         upload_file:[],
         loading: props.loading,
     };
+
 
     this.toggle = this.toggle.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -67,18 +70,24 @@ export default class ModalComponent extends React.Component {
       
       let uri = 'http://localhost:8000/posts';
       
-      axios.post(uri, form).then((response) => {
-        this.loadingStatus(false);
+      axios.post(uri, form)
+      .then((response) =>{
+        this.setState({posts: response.data.postData})
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+          .then(this.loadingStatus(false));
 
 
-      });
-        
       
     }
   
 
 
   render() {
+    console.log(this.state.posts);
+
     return (
 
         <div>
@@ -117,6 +126,26 @@ export default class ModalComponent extends React.Component {
           </ModalFooter>
           </form>
         </Modal>
+
+        <div>
+        <h1>Posts</h1>
+        {
+          this.state.posts.length == 0
+            ? null
+            : this.state.posts.map(posts => (
+              
+<div key={posts.id} className="card col col-lg-4 mt-3">
+<div className="card-body">
+  <h5 className="card-title">{posts.title}</h5>
+  <p className="card-text">{posts.content}</p>
+  <a href="#" className="btn bg-light rounded-circle"><i class="fa icon-4x text-danger fa-heart" aria-hidden="true"></i></a>
+</div>
+</div>
+
+            ))
+        }
+      </div>
+
         </div>
 
       

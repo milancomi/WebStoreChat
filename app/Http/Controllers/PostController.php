@@ -68,13 +68,13 @@ class PostController extends Controller
 
         
         
-        $file = $request->file('upload_file');
-        $fileOriginalName = $file->getClientOriginalName();          
-            $fileExtension  = $file->getClientOriginalExtension();
-            $fileName = basename($fileOriginalName,'.'.$fileExtension);
-            $mimeType       = $file->getMimeType();
-            $fileSize       = $file->getMaxFilesize();
-            $newName        = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
+            $file             = $request->file('upload_file');
+            $fileOriginalName = $file->getClientOriginalName();          
+            $fileExtension    = $file->getClientOriginalExtension();
+            $fileName         = basename($fileOriginalName,'.'.$fileExtension);
+            $mimeType         = $file->getMimeType();
+            $fileSize         = $file->getMaxFilesize();
+            $newName          = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
            
             Storage::disk('dropbox')->putFileAs("public/upload/$user->id/$post->id/",$file, $newName);
 
@@ -88,9 +88,10 @@ class PostController extends Controller
       
     }
 
-////////////////////////////////////
-return response()->json('RADIIIIIIIIIIIIIIII');
-      return redirect()->route('posts.show', $post->id);
+      $all_posts = Post::latest()->take(5)->with('files')->get();
+      // $all_posts = Post::with('files')->latest()->take(5)->get();
+
+          return response()->json(['postData'=>$all_posts]);
     }
 
     /**

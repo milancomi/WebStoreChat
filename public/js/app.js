@@ -91313,8 +91313,7 @@ var App = /*#__PURE__*/function (_Component) {
     var id = document.getElementById('app').attributes['data-user-id'].value;
     _this.state = {
       id: id,
-      loading: false,
-      posts: null
+      loading: false
     };
     _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this)); // this.user.stream = null;
     // this.peers = {};
@@ -91663,7 +91662,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-
+ // import Posts from '../components/Posts';
 
 var ModalComponent = /*#__PURE__*/function (_React$Component) {
   _inherits(ModalComponent, _React$Component);
@@ -91679,6 +91678,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       modal: false,
       title: '',
+      posts: [],
       content: '',
       published: false,
       upload_file: [],
@@ -91756,12 +91756,17 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
       var uri = 'http://localhost:8000/posts';
       axios.post(uri, form).then(function (response) {
-        _this2.loadingStatus(false);
-      });
+        _this2.setState({
+          posts: response.data.postData
+        });
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(this.loadingStatus(false));
     }
   }, {
     key: "render",
     value: function render() {
+      console.log(this.state.posts);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "primary",
         className: "col-md-2 offset-md-5",
@@ -91817,7 +91822,24 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
         onClick: this.toggle
-      }, "Cancel")))));
+      }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Posts"), this.state.posts.length == 0 ? null : this.state.posts.map(function (posts) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: posts.id,
+          className: "card col col-lg-4 mt-3"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "card-body"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+          className: "card-title"
+        }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: "card-text"
+        }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "#",
+          className: "btn bg-light rounded-circle"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          "class": "fa icon-4x text-danger fa-heart",
+          "aria-hidden": "true"
+        }))));
+      })));
     }
   }]);
 
