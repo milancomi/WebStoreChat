@@ -1,44 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
+
 import Games from './Games';
 import GamesRow from './GameRow';
 
  class Example extends React.Component {
-     constructor(props){
-         super(props);
-         this.state={gamesList:[]};
-     }
+  
 
 
-     componentDidMount(){
-
-
-const reactThis = this;
-         fetch('http://localhost/games')
-         .then((response)=>{
-             if(response.statu !==200){
-                 console.log('some error ocurred', response.status);
-                 return;
-             }
-
-             return response.json();
-         })
-         .then((result)=>{
-            reactThis.setState({gamesList:result})
-         })
-        .catch((err)=>{
-            console.log(err)
-
-        });
-        console.log(result);
- 
-    }
     render(){
         const Fragment = React.Fragment;
         const rowSize = 4;
 
         let gamesInfo = {};
-        let gamesData = this.state.gamesList.map((game)=>{
+        let gamesData = this.props.gamesList.map((game)=>{
             gamesInfo =  {
                 thumnail: `images/${game.thumbnail}`,
                 title: game.title,
@@ -66,8 +42,13 @@ const reactThis = this;
     );
 }
     }
-export default Example;
 
-if (document.getElementById('example')) {
-    ReactDOM.render(<Example />, document.getElementById('example'));
-}
+    let{listGames} = context;
+
+
+
+    const html = ReactDOMServer.renderToString(
+    <Main gamesList={listGames}/>
+);
+
+dispatchEvent(html);

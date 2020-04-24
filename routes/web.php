@@ -137,3 +137,40 @@ Route::get('drop/{filetitle}','DropfileController@show');
 
 Route::get('/fmsg','HomeController@messages');
 Route::get('/fmsgShow','HomeController@messagee')->name('messageRoute');
+
+
+//  SERVER RENDER
+
+
+$games = [
+    ['id'=>1,'thumbnail'=>'1.jpg','title'=>'ries of the Tomb Raider','desc'=>'wefowefwfewef'],
+    ['id'=>2,'thumbnail'=>'1.jpg','title'=>'ries of the Tomb Raider','desc'=>'wefowefwfewef'],
+    ['id'=>3,'thumbnail'=>'1.jpg','title'=>'ries of the Tomb Raider','desc'=>'wefowefwfewef'],
+    ['id'=>4,'thumbnail'=>'1.jpg','title'=>'ries of the Tomb Raider','desc'=>'wefowefwfewef']
+
+];
+
+
+
+Route::get('/321',function() use ($games){
+    return  view('home',['games'=>$games]);
+});
+
+Route::get('/123',function() use ($games){
+    return response()->json($games);
+});
+
+
+
+// Route::get('file/get/{filename}', ['as' => 'file.get', 'uses' => 'FileEntryController@get']);
+
+// // Controller
+// public function get($filename) {
+//     $file = Storage::get($filename);
+ 
+//     return (new Response($file, 200))
+//         ->header('Content-Type', Storage::mimeType($filename));
+// } 
+
+// // View
+// <img src="{{ route('getentry', $filename) }}" alt="Alt stuff" />

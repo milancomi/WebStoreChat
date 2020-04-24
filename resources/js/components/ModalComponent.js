@@ -9,6 +9,7 @@ export default class ModalComponent extends React.Component {
         modal: false,
         title: '',
         posts:[],
+        image: '',
         content :'' ,
         published:false,
         upload_file:[],
@@ -26,6 +27,7 @@ export default class ModalComponent extends React.Component {
   }
 
   toggle() {
+    
     this.setState({
       modal: !this.state.modal
     });
@@ -37,12 +39,15 @@ export default class ModalComponent extends React.Component {
     this.setState({content: event.target.value});
   }
   handleChangePublished(event) {
+
+
     this.setState({published: event.target.value});
   }
   handleChangeFile(event) {
-    this.setState({upload_file: event.target.value});
+    this.setState({upload_file: event.target.files[0]});
+    
   }
-  
+
   loadingStatus(bool) { 
     this.props.onChange(bool);
         this.setState({loading: bool.value
@@ -51,7 +56,7 @@ export default class ModalComponent extends React.Component {
     }
 
 
-  handleSubmit(event) {
+  handleSubmit(event){
     event.preventDefault();
 
 
@@ -61,24 +66,26 @@ export default class ModalComponent extends React.Component {
         title: this.state.title,
         content: this.state.content,
         published: this.state.published,
-        upload_file: this.state.upload_file
+        upload_file:this.state.upload_file,
 
       }
+
       this.setState({
         modal: !this.state.modal
       });
-      
+      console.log(form);
+
       let uri = 'http://localhost:8000/posts';
-      
-      axios.post(uri, form)
+
+
+      axios.post(uri,form)
       .then((response) =>{
-        console.log(response.data.postData);
         this.setState({posts: response.data.postData})
                 this.loadingStatus(false);
 
       })
       .catch(function(error){
-        console.log(error);
+        console.log("error"+error);
       });
 
 
@@ -126,7 +133,7 @@ export default class ModalComponent extends React.Component {
         <Button color="primary" className="col-md-2 offset-md-5" onClick={this.toggle}>Post +</Button>
 
         <Modal isOpen={this.state.modal}>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} >
           <ModalHeader>Add new Post</ModalHeader>
 
           <ModalBody>
@@ -142,18 +149,18 @@ export default class ModalComponent extends React.Component {
       </div>
 
       <div className="form-group">
-        <label><input type="checkbox"  name="published" onChange={this.handleChangeContent} value={this.state.published}/>Published</label>
+        <label><input type="checkbox"  name="published" onChange={this.handleChangePublished} value={this.state.published}/>Published</label>
       </div>
       <div className="form-group mb-3">
         <label htmlFor="exampleFormControlFile1">Add file/image</label>
-        <input type="file" name="upload_file"  onChange={this.handleChangeFile} className="form-control-file" id="exampleFormControlFile1"/>
+        <input type="file" name="upload_file" onChange={this.handleChangeFile} className="form-control-file" id="exampleFormControlFile1"/>
       </div>
 
 
   
           </ModalBody>
           <ModalFooter>
-          <input type="submit" value="Submit" color="primary" className="btn btn-primary" />
+          <input type="submit"  onClick={this.handleSubmit} value="Submit" color="primary" className="btn btn-primary" />
             <Button color="danger" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
           </form>
@@ -166,9 +173,9 @@ export default class ModalComponent extends React.Component {
           this.state.posts.length == 0
             ? null
             : this.state.posts.map(posts => (
-              <div>
+              <div key={posts.id}>
 
-<div key={posts.id} className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
+<div  className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
 <div className="card-body">
   <h5 className="card-title">{posts.title}</h5>
   <p className="card-text">{posts.content}</p>

@@ -49,6 +49,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+      dd($request->upload_file);
 
       $this->validate($request, [
         'title' => 'required|max:255',
@@ -63,6 +64,7 @@ class PostController extends Controller
         'published' => $request->has('published')
       ]);
 
+      dd($request->upload_file);
       if($request->hasFile('upload_file')){
 
 

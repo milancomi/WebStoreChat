@@ -3,8 +3,11 @@
 @section('content')
 {{-- <div id="example"></div> --}}
 
-<div id="app" data-user-id={!! Auth::user()->id !!} data-user-name={!!Auth::user()->name!!}></div>
+<div id="app" data-user-id={!! Auth::user()->id !!} data-user-name={!!Auth::user()->name!!}>
 
+{{-- {!! ssr('js/main-server.js')->context('listGames',$games)->render() !!} --}}
+</div>
+{{-- GAMES DA BUDE COMPACT --}}
 @if ($message = Session::get('success'))
 <div class="alert alert-success alert-block">
 	<button type="button" class="close" data-dismiss="alert">×</button>	
