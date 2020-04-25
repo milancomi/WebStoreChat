@@ -49,7 +49,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-      dd($request->upload_file);
 
       $this->validate($request, [
         'title' => 'required|max:255',
@@ -64,7 +63,6 @@ class PostController extends Controller
         'published' => $request->has('published')
       ]);
 
-      dd($request->upload_file);
       if($request->hasFile('upload_file')){
 
 
@@ -77,11 +75,12 @@ class PostController extends Controller
             $fileName         = basename($fileOriginalName,'.'.$fileExtension);
             $mimeType         = $file->getMimeType();
             $fileSize         = $file->getMaxFilesize();
-            $newName          = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
+            // $newName          = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
+            $newName          = $fileName.$fileExtension;
            
-            Storage::disk('dropbox')->putFileAs("public/upload/$user->id/$post->id/",$file, $newName);
+            Storage::disk('dropbox')->putFileAs("public/upload/$user->id$user->name/",$file, $newName);
 
-            $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id/$post->id/".$newName);
+            $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id$user->name/".$newName);
             $drop_file = $post->files()->create([
               'user_id'=> $user->id,
               'file_title'=>$newName,

@@ -69,6 +69,26 @@ public function show($fileTitle)
     }
 }
 
+public function get($filename)
+{
+    $all_files = collect($this->dropbox->listSharedLinks());
+    $file = $all_files->where('name','midMalaSlika-1-71.jpg')->first();
+    $file_url = str_replace('dl=0','raw=1',$file['url']);
+
+    return $file_url;->file($file_url);
+    
+    // (new Response($file, 200))
+    //         ->header('Content-Type', Storage::mimeType($filename));
+
+    
+
+}
+
+
+
+
+
+
 public function download($fileTitle)
 {
 try {

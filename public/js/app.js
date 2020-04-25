@@ -91898,10 +91898,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       modal: false,
-      title: '',
+      title: "",
       posts: [],
-      image: '',
-      content: '',
+      image: "",
+      content: "",
       published: false,
       upload_file: [],
       loading: props.loading
@@ -91967,6 +91967,17 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
 
       event.preventDefault();
       this.loadingStatus(true);
+      var formData = new FormData(); //formdata object
+
+      formData.append("title", this.state.title);
+      formData.append("content", this.state.content);
+      formData.append("published", this.state.published);
+      formData.append("upload_file", this.state.upload_file);
+      var config = {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      };
       var form = {
         title: this.state.title,
         content: this.state.content,
@@ -91976,9 +91987,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       this.setState({
         modal: !this.state.modal
       });
-      console.log(form);
-      var uri = 'http://localhost:8000/posts';
-      axios.post(uri, form).then(function (response) {
+      console.log(formData);
+      var uri = "http://localhost:8000/posts";
+      axios.post(uri, formData, config).then(function (response) {
         _this2.setState({
           posts: response.data.postData
         });
@@ -91989,28 +92000,33 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "getImageUrl",
+    value: function getImageUrl(imageName) {
+      console.log(imageName);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this3 = this;
 
-      var id = document.getElementById('app').attributes['data-user-id'].value;
-      var channel = Echo.channel('posts');
-      channel.listen('.postE', function (data) {
+      var id = document.getElementById("app").attributes["data-user-id"].value;
+      var channel = Echo.channel("posts");
+      channel.listen(".postE", function (data) {
         console.log(data);
 
         _this3.setState({
           posts: [data.post].concat(_toConsumableArray(_this3.state.posts))
         });
         /* this.setState({posts: [0].concat(this.state.statusData)})
-        */
+         */
 
       });
       /*
-      window.axios.get('http://bestof.test/axiosGet')
-      .then(res => {
-      //   this.setState({ persons });
-          console.log(res.data);
-          console.log("testt");
+        window.axios.get('http://bestof.test/axiosGet')
+        .then(res => {
+        //   this.setState({ persons });
+            console.log(res.data);
+            console.log("testt");
       });
       */
     }
@@ -92092,7 +92108,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa icon-4x text-danger fa-heart",
           "aria-hidden": "true"
-        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "PICTURE FIELD")));
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: posts.files[0].file_title
+        }))));
       }))));
     }
   }]);

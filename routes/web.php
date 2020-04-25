@@ -1,5 +1,6 @@
 <?php
 
+use App\DropFile;
 use App\Events\UserEvent;
 use App\Jobs\SendRegisterMailJob;
 use App\Mail\TESTTTT;
@@ -152,17 +153,15 @@ $games = [
 
 
 
-Route::get('/321',function() use ($games){
-    return  view('home',['games'=>$games]);
-});
+// Route::get('/dropAccess',function(){
+//    $drop =  DropFile::all();
+//     $url = $drop->first()->file_title;
 
-Route::get('/123',function() use ($games){
-    return response()->json($games);
-});
+// });
 
 
 
-// Route::get('file/get/{filename}', ['as' => 'file.get', 'uses' => 'FileEntryController@get']);
+Route::get('file/get/{filename}', ['as' => 'file.get', 'uses' => 'DropfileController@get'])->name('file_url');
 
 // // Controller
 // public function get($filename) {
