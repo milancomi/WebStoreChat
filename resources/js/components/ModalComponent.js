@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-// import Posts from '../components/Posts';
+import ReactImageAppear from 'react-image-appear';
 
 export default class ModalComponent extends React.Component {
   constructor(props) {
@@ -211,15 +211,19 @@ export default class ModalComponent extends React.Component {
                           ></i>
                         </a>
                       </div>
-                      <div>
                       {typeof posts.files[0] !== 'undefined' ?
-                      <img src={posts.files[0].file_title} />
+                      <ReactImageAppear 
+                    
+                      placeholder
+                      src={posts.files[0].file_title}
+                      className="post_img mx-auto d-block"
+                      placeholderClass="mx-auto d-block"
+                      />
                       :
                       null
                       }
                       </div>
                     </div>
-                  </div>
                 ))}
           </div>
         </div>
