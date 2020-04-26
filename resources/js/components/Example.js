@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Games from './Games';
-import GamesRow from './GameRow';
 
  class Example extends React.Component {
      constructor(props){

@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 // import Peer from 'simple-peer';
 import ModalComponent from '../components/ModalComponent';
 
-import ComponentOne from '../components/ComponentOne';
 const APP_KEY = '83c9614fa128f8d6027a';
 
 export default class App extends Component {
@@ -14,7 +13,7 @@ export default class App extends Component {
         const id = document.getElementById('app').attributes['data-user-id'].value;
          this.state = {
             id: id,
-            loading:false,
+            loading:true,
          };
 
          this.changeLoading = this.changeLoading.bind(this);
@@ -142,7 +141,7 @@ render() {
                     {/* <ComponentOne count={5} userId={this.state.id} /> */}
                     {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}
 
-            {this.state.loading ?  <div className="blink col-md-6 offset-md-5"><i style={{fontSize: "200px"}}className="fa fa-refresh fa-5x fa-spin"></i><br/><h1>Uploading content</h1></div> : "POSTS"}
+            {this.state.loading ?  <div className="blink " style={{position:"absolute",top: "30%", left: "40%"}}><i style={{fontSize: "300px"}} className="fa fa-refresh fa-5x fa-spin"></i><br/></div> : "POSTS"}
                        </div>
     );
 }

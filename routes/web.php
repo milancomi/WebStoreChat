@@ -161,7 +161,6 @@ $games = [
 
 
 
-Route::get('file/get/{filename}', ['as' => 'file.get', 'uses' => 'DropfileController@get'])->name('file_url');
 
 // // Controller
 // public function get($filename) {
@@ -173,3 +172,8 @@ Route::get('file/get/{filename}', ['as' => 'file.get', 'uses' => 'DropfileContro
 
 // // View
 // <img src="{{ route('getentry', $filename) }}" alt="Alt stuff" />
+
+
+Route::get('/get_all_posts','PostController@getAll');
+
+

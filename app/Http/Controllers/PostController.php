@@ -31,6 +31,12 @@ class PostController extends Controller
       return view('posts.index')->withPosts($posts);
     }
 
+    public function getAll()
+    {
+      $posts = Post::latest()->take(5)->with('files')->get();
+      return response()->json($posts);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

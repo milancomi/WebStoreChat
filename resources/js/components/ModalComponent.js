@@ -88,9 +88,8 @@ export default class ModalComponent extends React.Component {
       });
   }
 
-  getImageUrl(imageName) {
-    console.log(imageName);
-  }
+
+
 
   componentDidMount() {
     const id = document.getElementById("app").attributes["data-user-id"].value;
@@ -99,19 +98,23 @@ export default class ModalComponent extends React.Component {
 
     channel.listen(".postE", (data) => {
       console.log(data);
+      
       this.setState({ posts: [data.post, ...this.state.posts] });
-
-      /* this.setState({posts: [0].concat(this.state.statusData)})
-       */
     });
-    /*
-      window.axios.get('http://bestof.test/axiosGet')
-      .then(res => {
-      //   this.setState({ persons });
-          console.log(res.data);
-          console.log("testt");
-  });
-  */
+
+ axios.get(`${window.siteurl}/get_all_posts`)
+ .then((response) => {
+  console.log(response);
+
+  this.setState({ posts: response.data });
+  this.loadingStatus(false);
+
+ })
+ .catch(function(error) {
+   console.log("error" + error);
+ });
+
+
   }
   render() {
     return (
@@ -193,30 +196,34 @@ export default class ModalComponent extends React.Component {
         <div>
           <h1>Posts</h1>
           <div className="container-fluid">
-          {
-          this.state.posts.length == 0
-            ? null
-            : this.state.posts.map(posts => (
-              <div key={posts.id}>
-
-<div  className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
-<div className="card-body">
-  <h5 className="card-title">{posts.title}</h5>
-  <p className="card-text">{posts.content}</p>
-  <a href="#" className="btn bg-light rounded-circle"><i className="fa icon-4x text-danger fa-heart" aria-hidden="true"></i></a>
-</div>
-<div><img src={posts.files[0].file_title} />
-</div>
-</div>
-
-</div>
-            ))
-        }
+            {this.state.posts.length == 0
+              ? null
+              : this.state.posts.map((posts) => (
+                  <div key={posts.id}>
+                    <div className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
+                      <div className="card-body">
+                        <h5 className="card-title">{posts.title}</h5>
+                        <p className="card-text">{posts.content}</p>
+                        <a href="#" className="btn bg-light rounded-circle">
+                          <i
+                            className="fa icon-4x text-danger fa-heart"
+                            aria-hidden="true"
+                          ></i>
+                        </a>
+                      </div>
+                      <div>
+                      {typeof posts.files[0] !== 'undefined' ?
+                      <img src={posts.files[0].file_title} />
+                      :
+                      null
+                      }
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div>
         </div>
       </div>
-
-      </div>
-      
     );
   }
 }
