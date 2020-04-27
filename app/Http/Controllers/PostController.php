@@ -84,7 +84,12 @@ class PostController extends Controller
             // $newName          = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
             $newName          = $fileName.$fileExtension;
            
+
+            
             Storage::disk('dropbox')->putFileAs("public/upload/$user->id$user->name/",$file, $newName);
+
+
+
 
             $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id$user->name/".$newName);
             $drop_file = $post->files()->create([
@@ -98,8 +103,14 @@ class PostController extends Controller
 
 
     $evePost = Post::where('id',$post->id)->with('files')->first();
-    event(new PostCreatedEvent($evePost));
+    broadcast(new PostCreatedEvent($evePost))->toOthers();
+
+
       $all_posts = Post::latest()->take(5)->with('files')->get();
+
+
+
+
       // $all_posts = Post::with('files')->latest()->take(5)->get();
 
           return response()->json(['postData'=>$all_posts]);

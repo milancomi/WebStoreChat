@@ -91976,7 +91976,6 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       this.setState({
         loading: bool.value
       });
-      console.log(bool);
     }
   }, {
     key: "handleSubmit",
@@ -92025,15 +92024,17 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       var id = document.getElementById("app").attributes["data-user-id"].value;
       var channel = Echo.channel("posts");
       channel.listen(".postE", function (data) {
-        console.log(data);
+        _this3.loadingStatus(true);
+
+        console.log(data.post);
 
         _this3.setState({
           posts: [data.post].concat(_toConsumableArray(_this3.state.posts))
         });
+
+        _this3.loadingStatus(false);
       });
       axios.get("".concat(window.siteurl, "/get_all_posts")).then(function (response) {
-        console.log(response);
-
         _this3.setState({
           posts: response.data
         });
@@ -92109,7 +92110,13 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           key: posts.id
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "card col col-lg-6 mt-4 mb-2 offset-md-3 "
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, posts.newMessage == true ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-success alert-block"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "close",
+          "data-dismiss": "alert"
+        }, "\xD7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "New Post")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "card-body"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
           className: "card-title"

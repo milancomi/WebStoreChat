@@ -25,6 +25,7 @@ class PostCreatedEvent implements ShouldBroadcast
     public function __construct(Post $post)
     {
         $this->post = $post;
+        
     }
 
     /**
@@ -48,9 +49,11 @@ class PostCreatedEvent implements ShouldBroadcast
     public function broadCastWith()
     {
 
-        $this->post->id = $this->post->id+1;
+        $this->post->newMessage = true;
+        // $this->post->id = $this->post->id+1;
         return [
             'post'=>$this->post,
+            
         ];
     }
 }

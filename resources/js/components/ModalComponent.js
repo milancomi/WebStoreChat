@@ -14,6 +14,8 @@ export default class ModalComponent extends React.Component {
       published: false,
       upload_file: [],
       loading: props.loading,
+
+      
     };
 
     this.toggle = this.toggle.bind(this);
@@ -23,6 +25,7 @@ export default class ModalComponent extends React.Component {
     this.handleChangeFile = this.handleChangeFile.bind(this);
     this.loadingStatus = this.loadingStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   toggle() {
@@ -46,7 +49,6 @@ export default class ModalComponent extends React.Component {
   loadingStatus(bool) {
     this.props.onChange(bool);
     this.setState({ loading: bool.value });
-    console.log(bool);
   }
 
   handleSubmit(event) {
@@ -80,7 +82,9 @@ export default class ModalComponent extends React.Component {
     axios
       .post(uri, formData, config)
       .then((response) => {
+
         this.setState({ posts: response.data.postData });
+
         this.loadingStatus(false);
       })
       .catch(function(error) {
@@ -88,25 +92,30 @@ export default class ModalComponent extends React.Component {
       });
   }
 
-
-
-
   componentDidMount() {
     const id = document.getElementById("app").attributes["data-user-id"].value;
 
     let channel = Echo.channel("posts");
 
     channel.listen(".postE", (data) => {
-      console.log(data);
-      
+      this.loadingStatus(true);
+        console.log(data.post);
       this.setState({ posts: [data.post, ...this.state.posts] });
+      this.loadingStatus(false);
+
     });
+
+
+
+
+
 
  axios.get(`${window.siteurl}/get_all_posts`)
  .then((response) => {
-  console.log(response);
 
   this.setState({ posts: response.data });
+
+
   this.loadingStatus(false);
 
  })
@@ -117,6 +126,7 @@ export default class ModalComponent extends React.Component {
 
   }
   render() {
+
     return (
       <div>
         <Button
@@ -200,7 +210,14 @@ export default class ModalComponent extends React.Component {
               ? null
               : this.state.posts.map((posts) => (
                   <div key={posts.id}>
+
                     <div className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
+                    {posts.newMessage==true ? 
+                  <div className="alert alert-success alert-block">
+                  <button type="button" className="close" data-dismiss="alert">×</button>	
+                        <strong>New Post</strong>
+                </div>
+                  : null}
                       <div className="card-body">
                         <h5 className="card-title">{posts.title}</h5>
                         <p className="card-text">{posts.content}</p>
@@ -213,7 +230,6 @@ export default class ModalComponent extends React.Component {
                       </div>
                       {typeof posts.files[0] !== 'undefined' ?
                       <ReactImageAppear 
-                    
                       placeholder
                       src={posts.files[0].file_title}
                       className="post_img mx-auto d-block"
