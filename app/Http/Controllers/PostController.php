@@ -78,23 +78,23 @@ class PostController extends Controller
             $file             = $request->file('upload_file');
             $fileOriginalName = $file->getClientOriginalName();          
             $fileExtension    = $file->getClientOriginalExtension();
-            $fileName         = basename($fileOriginalName,'.'.$fileExtension);
+            $fileName         = basename($post->id.$fileOriginalName,'.'.$fileExtension);
             $mimeType         = $file->getMimeType();
             $fileSize         = $file->getMaxFilesize();
             // $newName          = $fileName .'-'.$user->id.'-'.$post->id.'.'.$fileExtension;
-            $newName          = $fileName.$fileExtension;
+            // $newName          = $fileName.$fileExtension;
            
 
             
-            Storage::disk('dropbox')->putFileAs("public/upload/$user->id$user->name/",$file, $newName);
+            Storage::disk('dropbox')->putFileAs("public/upload/$user->id$user->name/",$file, $fileName);
 
 
 
 
-            $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id$user->name/".$newName);
+            $this->dropbox->createSharedLinkWithSettings("public/upload/$user->id$user->name/".$fileName);
             $drop_file = $post->files()->create([
               'user_id'=> $user->id,
-              'file_title'=>$newName,
+              'file_title'=>$fileName,
               'file_type'=>$mimeType,
               'file_size'=>$fileSize
             ]);

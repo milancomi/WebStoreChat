@@ -176,4 +176,5 @@ $games = [
 
 Route::get('/get_all_posts','PostController@getAll');
 
+Route::post('/deactivate','HomeController@deactivate')->name('deactivate');
 

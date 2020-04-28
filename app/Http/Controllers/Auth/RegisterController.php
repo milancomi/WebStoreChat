@@ -80,4 +80,11 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function deactivate(Request $request)
+    {
+
+        return response()->json("RADIIII2");
+
+    }
 }

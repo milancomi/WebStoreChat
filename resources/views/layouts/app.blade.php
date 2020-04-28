@@ -72,7 +72,9 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+    <a class="dropdown-item" id="deactivate" data-id={{auth()->user()->id}}
+                                    >Deactivate account
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
@@ -83,10 +85,37 @@
                 </div>
             </div>
         </nav>
+        @if ($message = Session::get('info'))
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>	
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
+        
+        
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    <script>
+        
+    var btn = document.getElementById('deactivate');
+    var id = {'id' : btn.dataset.id};
+    var url  = "{{ route('deactivate') }}"
+
+      btn.onclick = (e) => {
+        e.preventDefault();
+
+                axios.post(url,id)
+                  .then((response) => {
+                    console.log("WORKKK !");
+                    window.location.href = "/login";
+      });
+
+
+    };
+
+    </script>
 </body>
 </html>
