@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 // import Pusher from 'pusher-js';
 // import Peer from 'simple-peer';
 import ModalComponent from '../components/ModalComponent';
+import Example from './Example';
 
 const APP_KEY = '83c9614fa128f8d6027a';
 
@@ -24,7 +25,7 @@ export default class App extends Component {
         // this.mediaHandler = new MediaHandler();
         // this.setupPusher();
 
-        // this.callTo = this.callTo.bind(this);
+// this.callTo = this.callTo.bind(this);
         // this.setupPusher = this.setupPusher.bind(this);
         // this.startPeer = this.startPeer.bind(this);
     }
@@ -137,6 +138,7 @@ changeLoading(bool){
 render() {
     return (
         <div className="App">
+            <Example/>
                     <ModalComponent loading={this.state.loading} onChange={this.changeLoading}/>        
                     {/* <ComponentOne count={5} userId={this.state.id} /> */}
                     {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}

@@ -178,3 +178,5 @@ Route::get('/get_all_posts','PostController@getAll');
 
 Route::post('/deactivate','HomeController@deactivate')->name('deactivate');
 
+Route::get('/contacts','ContactsController@get');
+Route::get('/conversation/{id}','ContactsController@getMessagesFor');
