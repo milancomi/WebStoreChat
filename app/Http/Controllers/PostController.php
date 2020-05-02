@@ -33,7 +33,7 @@ class PostController extends Controller
 
     public function getAll()
     {
-      $posts = Post::latest()->take(5)->with('files')->get();
+      $posts = Post::latest()->take(5)->with('files')->with('user')->get();
       return response()->json($posts);
     }
 

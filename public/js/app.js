@@ -91691,6 +91691,7 @@ var App = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "App"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        userId: this.state.id,
         loading: this.state.loading,
         onChange: this.changeLoading
       }), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92078,15 +92079,25 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       content: "",
       published: false,
       upload_file: [],
-      loading: props.loading
+      loading: props.loading,
+      modalMessage: false,
+      messageFrom: props.userId,
+      messageForUserId: "",
+      messageForUserName: "",
+      messageForPostId: "",
+      messageForPostName: "",
+      message: ""
     };
     _this.toggle = _this.toggle.bind(_assertThisInitialized(_this));
+    _this.toggle2 = _this.toggle2.bind(_assertThisInitialized(_this));
     _this.handleChangeTitle = _this.handleChangeTitle.bind(_assertThisInitialized(_this));
     _this.handleChangeContent = _this.handleChangeContent.bind(_assertThisInitialized(_this));
     _this.handleChangePublished = _this.handleChangePublished.bind(_assertThisInitialized(_this));
     _this.handleChangeFile = _this.handleChangeFile.bind(_assertThisInitialized(_this));
     _this.loadingStatus = _this.loadingStatus.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.handleMessageSubmit = _this.handleMessageSubmit.bind(_assertThisInitialized(_this));
+    _this.handleChangeMessage = _this.handleChangeMessage.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -92095,6 +92106,26 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     value: function toggle() {
       this.setState({
         modal: !this.state.modal
+      });
+    }
+  }, {
+    key: "toggle2",
+    value: function toggle2(event) {
+      if (typeof event.target.attributes['data-msg-post-id'] !== "undefined") {
+        var postId = event.target.attributes['data-msg-post-id'].value;
+        var postName = event.target.attributes['data-msg-post-name'].value;
+        var msgForUserId = event.target.attributes['data-msg-for-user-id'].value;
+        var msgForUserName = event.target.attributes['data-msg-for-user-name'].value;
+        this.setState({
+          messageForUserId: msgForUserId,
+          messageForUserName: msgForUserName,
+          messageForPostId: postId,
+          messageForPostName: postName
+        });
+      }
+
+      this.setState({
+        modalMessage: !this.state.modalMessage
       });
     }
   }, {
@@ -92134,9 +92165,41 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "handleChangeMessage",
+    value: function handleChangeMessage(event) {
+      this.setState({
+        message: event.target.value
+      });
+    }
+  }, {
+    key: "handleMessageSubmit",
+    value: function handleMessageSubmit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      this.loadingStatus(true);
+      var form = {
+        message: this.state.message,
+        from_user_id: this.state.messageFrom,
+        for_post_id: this.state.messageForPostId,
+        to_user_id: this.state.messageForUserId
+      };
+      this.setState({
+        modalMessage: !this.state.modalMessage
+      });
+      var uri = "http://localhost:8000/new_message";
+      axios.post(uri, form).then(function (response) {
+        console.log(response);
+
+        _this2.loadingStatus(false);
+      })["catch"](function (error) {
+        console.log("error" + error);
+      });
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       event.preventDefault();
       this.loadingStatus(true);
@@ -92160,14 +92223,13 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       this.setState({
         modal: !this.state.modal
       });
-      console.log(formData);
       var uri = "http://localhost:8000/posts";
       axios.post(uri, formData, config).then(function (response) {
-        _this2.setState({
+        _this3.setState({
           posts: response.data.postData
         });
 
-        _this2.loadingStatus(false);
+        _this3.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92175,27 +92237,27 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       var channel = Echo.channel("posts");
       channel.listen(".postE", function (data) {
-        _this3.loadingStatus(true);
+        _this4.loadingStatus(true);
 
         console.log(data.post);
 
-        _this3.setState({
-          posts: [data.post].concat(_toConsumableArray(_this3.state.posts))
+        _this4.setState({
+          posts: [data.post].concat(_toConsumableArray(_this4.state.posts))
         });
 
-        _this3.loadingStatus(false);
+        _this4.loadingStatus(false);
       });
       axios.get("".concat(window.siteurl, "/get_all_posts")).then(function (response) {
-        _this3.setState({
+        _this4.setState({
           posts: response.data
         });
 
-        _this3.loadingStatus(false);
+        _this4.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92203,6 +92265,8 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this5 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "primary",
         className: "col-md-2 offset-md-5",
@@ -92244,13 +92308,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         className: "form-group mb-3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "exampleFormControlFile1"
-      }, "Add file/image"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "file",
-        name: "upload_file",
-        onChange: this.handleChangeFile,
-        className: "form-control-file",
-        id: "exampleFormControlFile1"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Add file/image"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         onClick: this.handleSubmit,
         value: "Submit",
@@ -92259,6 +92317,45 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
         onClick: this.toggle
+      }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+        isOpen: this.state.modalMessage
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this.handleMessageSubmit
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], null, "Message for: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.messageForUserName, " ", this.state.messageForUserId)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "About: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " ", this.state.messageForPostName, " ", this.state.messageForPostId)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Hidden inputs fromUser:", this.state.messageFrom, ", ForUser:", this.state.messageForUserId, ",ForPost:", this.state.messageForPostId), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "message"
+      }, "Message: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        className: "form-control",
+        rows: "6",
+        id: "message",
+        onChange: this.handleChangeMessage,
+        name: "message",
+        placeholder: "Write question"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "hidden",
+        name: "from_user_id",
+        className: "form-control-file",
+        value: this.state.messageFrom
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "hidden",
+        name: "for_post_id",
+        className: "form-control-file",
+        value: this.state.messageForPostId
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "hidden",
+        name: "to_user_id",
+        className: "form-control-file",
+        value: this.state.messageForUserId
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "submit",
+        onClick: this.handleMessageSubmit,
+        value: "Submit",
+        color: "primary",
+        className: "btn btn-primary"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+        color: "danger",
+        onClick: this.toggle2
       }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Posts"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid"
       }, this.state.posts.length == 0 ? null : this.state.posts.map(function (posts) {
@@ -92276,7 +92373,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           className: "card-body"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
           className: "card-title"
-        }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "User:", posts.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: "card-text"
         }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
           href: "#",
@@ -92284,12 +92381,23 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa icon-4x text-danger fa-heart",
           "aria-hidden": "true"
-        }))), typeof posts.files[0] !== 'undefined' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_image_appear__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        })), typeof posts.files[0] !== "undefined" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_image_appear__WEBPACK_IMPORTED_MODULE_2__["default"], {
           placeholder: true,
           src: posts.files[0].file_title,
           className: "post_img mx-auto d-block",
           placeholderClass: "mx-auto d-block"
-        }) : null));
+        }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+          "data-msg-post-id": posts.id,
+          "data-msg-post-name": posts.title,
+          "data-msg-for-user-id": posts.user.id,
+          "data-msg-for-user-name": posts.user.name,
+          color: "success",
+          className: "col-md-4",
+          onClick: _this5.toggle2
+        }, "Ask (Username)", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-comments icon-4x",
+          "aria-hidden": "true"
+        })))));
       }))));
     }
   }]);

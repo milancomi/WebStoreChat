@@ -138,7 +138,7 @@ changeLoading(bool){
 render() {
     return (
         <div className="App">
-                    <ModalComponent loading={this.state.loading} onChange={this.changeLoading}/>        
+                    <ModalComponent userId={this.state.id} loading={this.state.loading} onChange={this.changeLoading}/>        
                     {/* <ComponentOne count={5} userId={this.state.id} /> */}
                     {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}
 
