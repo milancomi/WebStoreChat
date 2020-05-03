@@ -108,8 +108,7 @@ class PostController extends Controller
 
       $all_posts = Post::latest()->take(5)->with('files')->with('user')->get();
 
-
-
+ 
 
       // $all_posts = Post::with('files')->latest()->take(5)->get();
 
