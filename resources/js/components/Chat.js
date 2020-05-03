@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
         componentDidMount(){
         axios.get('/messages')
         .then((response)=>{
-            console.log(response);
+            console.log(response.data);
             this.setState({ messages: response.data});
         });
 

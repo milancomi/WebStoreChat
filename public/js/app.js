@@ -91733,7 +91733,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       axios.get('/messages').then(function (response) {
-        console.log(response);
+        console.log(response.data);
 
         _this2.setState({
           messages: response.data

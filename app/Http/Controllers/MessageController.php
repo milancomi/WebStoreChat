@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -11,10 +12,15 @@ class MessageController extends Controller
     public function allMessages(Request $request)
     {
     
-        $msgs = Message::where('from',7)->orWhere('to',7)->select('to')->get();
+        $id=2;
+        $from = Message::where('from',$id)->orWhere('to',$id)->pluck('from');
+        $to = Message::where('from',$id)->orWhere('to',$id)->pluck('to');
 
-        dd($msgs);
-        return response()->json($msgs);
+        
+        $users = User::where('id','!=',$id)->whereIn('id',$from)->orWhereIn('id',$to)->where('id','!=',$id)->get();
+ 
+        
+        return response()->json($users);
     }
     
     public function newMsg(Request $request)
