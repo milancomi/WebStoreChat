@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+
+    public function allMessages(Request $request)
+    {
+    
+        $msgs = Message::where('from',7)->orWhere('to',7)->select('to')->get();
+
+        dd($msgs);
+        return response()->json($msgs);
+    }
     
     public function newMsg(Request $request)
     {

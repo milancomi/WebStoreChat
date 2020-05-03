@@ -226,8 +226,14 @@ export default class ModalComponent extends React.Component {
                 </label>
               </div>
               <div className="form-group mb-3">
-                <label htmlFor="exampleFormControlFile1">Add file/image</label>
-      
+                <label htmlFor="exampleFormControlFile1">Add image</label>
+                <input
+                  type="file"
+                  name="upload_file"
+                  onChange={this.handleChangeFile}
+                  className="form-control-file"
+                  id="exampleFormControlFile1"
+                />
               </div>
             </ModalBody>
             <ModalFooter>

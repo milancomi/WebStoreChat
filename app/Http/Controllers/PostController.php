@@ -102,11 +102,11 @@ class PostController extends Controller
     }
 
 
-    $evePost = Post::where('id',$post->id)->with('files')->first();
+    $evePost = Post::where('id',$post->id)->with('files')->with('user')->first();
     broadcast(new PostCreatedEvent($evePost))->toOthers();
 
 
-      $all_posts = Post::latest()->take(5)->with('files')->get();
+      $all_posts = Post::latest()->take(5)->with('files')->with('user')->get();
 
 
 
