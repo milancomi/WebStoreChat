@@ -251,7 +251,6 @@ export default class ModalComponent extends React.Component {
             <ModalHeader>Message for: <strong>{this.state.messageForUserName} {this.state.messageForUserId}</strong></ModalHeader>
             <ModalBody>
               <h4>About: <strong> {this.state.messageForPostName} {this.state.messageForPostId}</strong></h4>
-    <p>Hidden inputs fromUser:{this.state.messageFrom}, ForUser:{this.state.messageForUserId},ForPost:{this.state.messageForPostId}</p>
     <div className="form-group">
                 <label htmlFor="message">Message: </label>
                 <textarea
@@ -305,7 +304,7 @@ export default class ModalComponent extends React.Component {
               ? null
               : this.state.posts.map((posts) => (
                   <div key={posts.id}>
-                    <div className="card col col-lg-6 mt-4 mb-2 offset-md-3 ">
+                    <div className="card col col-lg-6 mt-4 mb-2 offset-md-3 divider ">
                       {posts.newMessage == true ? (
                         <div className="alert alert-success alert-block">
                           <button
@@ -319,6 +318,7 @@ export default class ModalComponent extends React.Component {
                         </div>
                       ) : null}
                       <div className="card-body">
+
                         <h5 className="card-title">{posts.title}</h5>
                         <p>User:{posts.user.name}</p>
 
@@ -347,8 +347,7 @@ export default class ModalComponent extends React.Component {
                           className="col-md-4"
                           onClick={this.toggle2}
                         >
-                          Ask (Username)
-                          <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
+                          Ask: {posts.user.name}    <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
                         </Button>
                   </div>
                   </div>

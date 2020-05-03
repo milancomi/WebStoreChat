@@ -10928,3 +10928,11 @@ a.text-dark:focus {
   padding: 5px;
 }
 
+.divider {
+  border-top: 8px solid #bbb;
+  border-bottom: 8px solid #bbb;
+  border-right: 2px solid #bbb;
+  border-left: 2px solid #bbb;
+  border-radius: 5px;
+}
+
