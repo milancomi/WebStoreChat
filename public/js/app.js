@@ -91742,6 +91742,8 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         chatWith: user_id
       });
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
+        console.log(response.data);
+
         _this2.setState({
           messages: response.data
         });
@@ -91775,7 +91777,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row chatField"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-12 col-md-3"
+        className: "col-12 col-sm-3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "User:"), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
@@ -91789,31 +91791,35 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           className: "badge badge-primary badge-pill"
         }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-7"
+        className: "col-sm-7"
       }, this.state.messages.length == 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " Select user") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Messages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 border border-secondary rounded-lg pt-3 bg-white msgField"
+        className: "col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField"
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: messages.id
         }, messages.from == _this4.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "ml-3 pl-0 col-md-8 rounded-right bg-secondary border border-dark mb-3"
+          className: "ml-3 pl-0 col-sm-8 rounded-right bg-secondary border border-dark mb-3"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: "ml-3"
         }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "triangle-left"
-        }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row pr-3"
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-3"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, messages.created_at))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row pr-0"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col pr-0 col-md-7 rounded-left offset-md-5 bg-primary border border-dark mb-3 mr-1"
+          className: "col-sm-4"
+        }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, messages.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-8 rounded-left wdthh90 bg-primary border border-dark mb-3 "
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: ""
         }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "triangle-right float-right"
         }))));
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-7 offset-md-3 msgComposeField"
+        className: "col-sm-7 offset-md-3 msgComposeField"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         className: "form-control",
         rows: "3",

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,9 +36,10 @@ class MessageController extends Controller
                 return $query->where('to', $auth_id)
                     ->where('from', '=', $id);
             })
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json($messages);
+            return response()->json($messages);
     }
     public function newMsg(Request $request)
     {
