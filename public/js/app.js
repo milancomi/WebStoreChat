@@ -91587,7 +91587,8 @@ var App = /*#__PURE__*/function (_Component) {
     _this.state = {
       id: id,
       loading: true,
-      whichComponentToShow: "ModalComponent"
+      whichComponentToShow: "Chat" // whichComponentToShow: "ModalComponent",
+
     };
     _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this));
     return _this;
@@ -91684,6 +91685,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -91709,6 +91711,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Chat = /*#__PURE__*/function (_React$Component) {
   _inherits(Chat, _React$Component);
 
@@ -91721,43 +91724,76 @@ var Chat = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      messages: [],
+      users: [],
       id: ""
     };
+    _this.msgsById = _this.msgsById.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Chat, [{
+    key: "msgsById",
+    value: function msgsById(e) {
+      console.log(e);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios.get('/messages').then(function (response) {
+      axios.get("/messages").then(function (response) {
         console.log(response.data);
 
         _this2.setState({
-          messages: response.data
+          users: response.data
         });
       });
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid"
-      }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: messages.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card col col-lg-6 mt-4 mb-2 offset-md-3 divider "
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card-body"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-          className: "card-title"
-        }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "User:", messages.from), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-          className: "card-text"
-        }, messages.to))));
-      })), "        ");
+      var _this3 = this;
+
+      var i = 1;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-12 col-md-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Select user:"), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          onClick: function onClick() {
+            return _this3.msgsById(users.id);
+          },
+          className: "list-group",
+          key: users.id
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "list-group-item d-flex align-items-center"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "badge badge-primary badge-pill"
+        }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-7"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Messages:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12 border border-secondary rounded-lg pt-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "ml-3 pl-0 col-md-8 rounded-right bg-secondary border border-dark mb-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "ml-3"
+      }, "moja moja poru porukamoja poruka"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "triangle-left"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row pr-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col pr-0 col-md-7 rounded-left offset-md-5 bg-primary border border-dark mb-3 mr-1"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: ""
+      }, "tvoja"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "triangle-right float-right"
+      })))))));
     }
   }]);
 

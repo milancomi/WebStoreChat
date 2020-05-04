@@ -55,3 +55,19 @@
 
     border-radius: 5px;
   }
+
+
+  .triangle-left {
+    width: 0;
+    height: 0;
+    border-bottom: 15px solid black;
+    border-right: 15px solid transparent;
+
+  }
+
+  .triangle-right {
+    width: 0;
+    height: 0;
+    border-bottom: 15px solid black;
+    border-left: 15px solid transparent;
+  }

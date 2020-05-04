@@ -16,7 +16,9 @@ export default class App extends Component {
     this.state = {
       id: id,
       loading: true,
-      whichComponentToShow: "ModalComponent",
+      whichComponentToShow: "Chat",
+      // whichComponentToShow: "ModalComponent",
+
     };
 
     this.changeLoading = this.changeLoading.bind(this);
