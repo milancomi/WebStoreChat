@@ -184,4 +184,5 @@ Route::get('/conversation/{id}','ContactsController@getMessagesFor');
 Route::post('/new_message','MessageController@newMsg');
 
 
-Route::get('/messages','MessageController@allMessages');
+Route::get('/users_messaged','MessageController@allMessagedUsers');
+Route::get('/messages/{id}','MessageController@messageById');
