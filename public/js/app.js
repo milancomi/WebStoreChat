@@ -91632,7 +91632,7 @@ var App = /*#__PURE__*/function (_Component) {
           loading: this.state.loading,
           onChange: this.changeLoading
         }), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "blink ",
+          className: "blink",
           style: {
             position: "absolute",
             top: "30%",
@@ -91688,6 +91688,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -91727,16 +91739,64 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       id: "",
       users: [],
       messages: [],
-      chatWith: ""
+      chatWith: "",
+      messageContent: ""
     };
     _this.msgsById = _this.msgsById.bind(_assertThisInitialized(_this));
+    _this.scrollToBottom = _this.scrollToBottom.bind(_assertThisInitialized(_this));
+    _this.submitMessage = _this.submitMessage.bind(_assertThisInitialized(_this));
+    _this.handleChangeNewMessageContent = _this.handleChangeNewMessageContent.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Chat, [{
+    key: "handleChangeNewMessageContent",
+    value: function handleChangeNewMessageContent(event) {
+      this.setState({
+        messageContent: event.target.value
+      });
+    }
+  }, {
+    key: "scrollToBottom",
+    value: function scrollToBottom() {
+      var element = document.getElementById("scrolling");
+      element.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  }, {
+    key: "submitMessage",
+    value: function submitMessage(e) {
+      var _this2 = this;
+
+      var receiver_id = this.state.chatWith;
+
+      if (e.keyCode == 13) {
+        if (e.target.value == "" || !e.target.value.replace(/\s/g, "")) {
+          console.log("empty message");
+        } else {
+          var form = {
+            message: e.target.value,
+            to_user_id: this.state.chatWith
+          };
+          var uri = "".concat(window.siteurl, "/new_message_chat");
+          axios.post(uri, form).then(function (response) {
+            _this2.setState({
+              messages: [].concat(_toConsumableArray(_this2.state.messages), [response.data]),
+              messageContent: ''
+            });
+
+            _this2.scrollToBottom();
+          })["catch"](function (error) {
+            console.log("error" + error);
+          });
+        }
+      }
+    }
+  }, {
     key: "msgsById",
     value: function msgsById(user_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.setState({
         chatWith: user_id
@@ -91744,15 +91804,17 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
         console.log(response.data);
 
-        _this2.setState({
+        _this3.setState({
           messages: response.data
         });
+
+        _this3.scrollToBottom();
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       this.setState({
@@ -91761,7 +91823,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("/users_messaged").then(function (response) {
         console.log(response.data);
 
-        _this3.setState({
+        _this4.setState({
           users: response.data
         });
       });
@@ -91769,7 +91831,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var i = 1;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91781,7 +91843,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "User:"), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
-            return _this4.msgsById(users.id);
+            return _this5.msgsById(users.id);
           },
           className: "list-group",
           key: users.id
@@ -91791,16 +91853,16 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           className: "badge badge-primary badge-pill"
         }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-7"
+        className: "col-sm-7 "
       }, this.state.messages.length == 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " Select user") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Messages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField"
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: messages.id
-        }, messages.from == _this4.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, messages.from == _this5.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "ml-3 pl-0 col-sm-8 rounded-right bg-secondary border border-dark mb-3"
+          className: "ml-3 pl-0 col-sm-8 rounded-right bg-mango border border-dark mb-3"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: "ml-3"
         }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91812,21 +91874,37 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-sm-4"
         }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, messages.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-sm-8 rounded-left wdthh90 bg-primary border border-dark mb-3 "
+          className: "col-sm-8 rounded-left wdthh90 blClr text-white border border-dark mb-3 "
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: ""
         }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "triangle-right float-right"
         }))));
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "scrolling",
+        style: {
+          "float": "left",
+          clear: "both"
+        },
+        ref: function ref(el) {
+          _this5.messagesEnd = el;
+        }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-7 offset-md-3 msgComposeField"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
-        className: "form-control",
+        onKeyDown: this.submitMessage,
+        style: {
+          resize: "none"
+        },
+        className: "form-control bg-dark text-white",
         rows: "3",
-        onChange: this.handleChangeContent,
+        overflow: "auto",
+        onChange: function onChange(e) {
+          return _this5.handleChangeNewMessageContent(e);
+        },
+        value: this.state.messageContent,
         id: "post_content",
-        name: "content",
-        placeholder: "Write message ..."
+        name: "content"
       }))));
     }
   }]);

@@ -7,12 +7,20 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
+<style>
+    html, body {
+        background-color: #fff;
+        color: #636b6f;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 200;
+        height: 100vh;
+        margin: 0;
+    }
+</style>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -94,10 +102,9 @@
         
         
 
-        <main class="py-4">
-            @yield('content')
-        </main>
     </div>
+    @yield('content')
+
     <script>
         
     var btn = document.getElementById('deactivate');
@@ -117,5 +124,7 @@
     };
 
     </script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
+
 </body>
 </html>

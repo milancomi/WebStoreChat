@@ -10954,6 +10954,18 @@ a.text-dark:focus {
   height: 80vh;
 }
 
+.blClr {
+  background: #00c6ff;
+  /* fallback for old browsers */
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #0072ff, #00c6ff);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.vh100body {
+  height: 100vh !important;
+}
+
 .wdthh90 {
   padding-right: 0 !important;
   max-width: 64% !important;
@@ -10962,11 +10974,20 @@ a.text-dark:focus {
 .msgField {
   overflow: auto;
   background-image: linear-gradient(to bottom, #b4a0a4, #d5c9cd, #E9E9E9, #ffffff);
-  height: 400px;
+  height: 60vh !important;
+  max-height: 60vh !important;
 }
 
 .msgComposeField {
-  height: 15%;
-  max-height: 15%;
+  height: 15vh !important;
+  max-height: 15vh !important;
+}
+
+.bg-mango {
+  background: #ffe259;
+  /* fallback for old browsers */
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #ffa751, #ffe259);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 

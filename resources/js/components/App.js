@@ -67,8 +67,9 @@ export default class App extends Component {
           {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}
 
           {this.state.loading ? (
+            
             <div
-              className="blink "
+              className="blink"
               style={{ position: "absolute", top: "30%", left: "40%" }}
             >
               <i

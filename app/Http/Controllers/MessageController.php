@@ -36,7 +36,7 @@ class MessageController extends Controller
                 return $query->where('to', $auth_id)
                     ->where('from', '=', $id);
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
             return response()->json($messages);
@@ -44,9 +44,27 @@ class MessageController extends Controller
     public function newMsg(Request $request)
     {
         $message = $request->message;
-        $from = $request->from_user_id;
-        $for_post = $request->for_post_id;
+        // $from2 = $request->from_user_id;
+        $from = Auth::user()->id;        
         $to_user = $request->to_user_id;
+
+        $msg = Message::create([
+            'from' => $from,
+            'to' => $to_user,
+            'text' => $message,
+        ]);
+
+        return response()->json($msg);
+    }
+
+
+
+
+    public function newMsgChat(Request $request)
+    {
+        $from = Auth::user()->id;        
+        $to_user = $request->to_user_id;
+        $message = $request->message;
 
         $msg = Message::create([
             'from' => $from,

@@ -3,7 +3,7 @@
 @section('content')
 {{-- <div id="example"></div> --}}
 
-<div id="app" data-user-id={!! Auth::user()->id !!} data-user-name={!!Auth::user()->name!!}>
+<div id="app" class="blClr vh100body" data-user-id={!! Auth::user()->id !!} data-user-name={!!Auth::user()->name!!}>
 
 {{-- {!! ssr('js/main-server.js')->context('listGames',$games)->render() !!} --}}
 </div>

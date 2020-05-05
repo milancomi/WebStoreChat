@@ -11,9 +11,51 @@ class Chat extends React.Component {
       users: [],
       messages: [],
       chatWith: "",
+      messageContent: "",
     };
     this.msgsById = this.msgsById.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+    this.submitMessage = this.submitMessage.bind(this);
+    this.handleChangeNewMessageContent =this.handleChangeNewMessageContent.bind(this);
   }
+
+  handleChangeNewMessageContent(event) {
+    this.setState({ messageContent: event.target.value });
+  }
+  scrollToBottom() {
+    let element = document.getElementById("scrolling");
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+
+  submitMessage(e) {
+    let receiver_id = this.state.chatWith;
+    if (e.keyCode == 13) {
+      if (e.target.value == "" || !e.target.value.replace(/\s/g, "")) {
+        console.log("empty message");
+      } else {
+        const form = {
+          message: e.target.value,
+          to_user_id: this.state.chatWith,
+        };
+    
+         let uri = `${window.siteurl}/new_message_chat`;
+    
+        axios
+          .post(uri,form)
+          .then((response) => {
+            this.setState({ 
+              messages: [...this.state.messages,response.data],
+              messageContent: ''
+            });
+            this.scrollToBottom();
+
+            })
+          .catch(function(error) {
+            console.log("error" + error);
+          });
+    }
+  }
+}
   msgsById(user_id) {
     this.setState({
       chatWith: user_id,
@@ -24,6 +66,7 @@ class Chat extends React.Component {
       this.setState({
         messages: response.data,
       });
+      this.scrollToBottom();
     });
   }
   componentDidMount() {
@@ -61,7 +104,7 @@ class Chat extends React.Component {
                   </ul>
                 ))}
           </div>
-          <div className="col-sm-7">
+          <div className="col-sm-7 ">
             {this.state.messages.length == 0 ? (
               <h3> Select user</h3>
             ) : (
@@ -74,17 +117,22 @@ class Chat extends React.Component {
                     <div key={messages.id}>
                       {messages.from == this.state.id ? (
                         <div className="row">
-                          <div className="ml-3 pl-0 col-sm-8 rounded-right bg-secondary border border-dark mb-3">
+                          <div className="ml-3 pl-0 col-sm-8 rounded-right bg-mango border border-dark mb-3">
                             <p className="ml-3">{messages.text}</p>
                             <div className="triangle-left"></div>
                           </div>
-                        <div className="col-sm-3"><span>{messages.created_at}</span></div>
+                          <div className="col-sm-3">
+                            <span>{messages.created_at}</span>
+                          </div>
                         </div>
                       ) : (
                         <div className="row pr-0">
-                      <div className="col-sm-4"> <span>{messages.created_at}</span></div>
-                         
-                          <div className="col-sm-8 rounded-left wdthh90 bg-primary border border-dark mb-3 ">
+                          <div className="col-sm-4">
+                            {" "}
+                            <span>{messages.created_at}</span>
+                          </div>
+
+                          <div className="col-sm-8 rounded-left wdthh90 blClr text-white border border-dark mb-3 ">
                             <p className="">{messages.text}</p>
                             <div className="triangle-right float-right"></div>
                           </div>
@@ -92,17 +140,29 @@ class Chat extends React.Component {
                       )}
                     </div>
                   ))}
+              <div
+                id="scrolling"
+                style={{ float: "left", clear: "both" }}
+                ref={(el) => {
+                  this.messagesEnd = el;
+                }}
+              ></div>
             </div>
           </div>
 
           <div className="col-sm-7 offset-md-3 msgComposeField">
             <textarea
-              className="form-control"
+              onKeyDown={this.submitMessage}
+              style={{ resize: "none" }}
+              className="form-control bg-dark text-white"
               rows="3"
-              onChange={this.handleChangeContent}
+              overflow="auto"
+              onChange={e => this.handleChangeNewMessageContent(e)}
+              value={this.state.messageContent}
+
               id="post_content"
               name="content"
-              placeholder="Write message ..."
+             
             />
           </div>
         </div>

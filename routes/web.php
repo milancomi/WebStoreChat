@@ -186,3 +186,6 @@ Route::post('/new_message','MessageController@newMsg');
 
 Route::get('/users_messaged','MessageController@allMessagedUsers');
 Route::get('/messages/{id}','MessageController@messageById');
+
+
+Route::post('/new_message_chat','MessageController@newMsgChat');
