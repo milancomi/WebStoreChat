@@ -91816,10 +91816,14 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       var msgChannel = Echo["private"]("messages.".concat(id));
       msgChannel.listen('NewMessageEvent', function (e) {
         if (_this4.state.chatWith == e.message.from) {
-          console.log(e);
-        }
+          _this4.setState({
+            messages: [].concat(_toConsumableArray(_this4.state.messages), [e.message])
+          });
 
-        alert("WHATEVER");
+          _this4.scrollToBottom();
+
+          return;
+        }
       });
     }
   }, {

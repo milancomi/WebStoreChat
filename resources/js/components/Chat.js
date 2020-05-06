@@ -84,9 +84,12 @@ class Chat extends React.Component {
     msgChannel.listen('NewMessageEvent',(e)=>{
       if(this.state.chatWith == e.message.from)
       {
-      console.log(e);
+        this.setState({
+          messages: [...this.state.messages,e.message],
+        });
+        this.scrollToBottom();
+        return;
       }
-      alert("WHATEVER");
     });
 
   }
