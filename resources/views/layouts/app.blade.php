@@ -40,8 +40,8 @@
     </script>
             {{-- <script type="text/javascript"> window.Laravel = {{csrf_token()}},]);></script> --}}
 
-    <div id="app2">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <div id="app2"class="stickyNavbar" >
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-grayGradient" style="position:sticky">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}

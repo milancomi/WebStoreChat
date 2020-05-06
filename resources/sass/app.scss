@@ -70,13 +70,6 @@
     border-left: 15px solid transparent;
   }
 
-  .chatField
-  {
-    height:80vh;
-
-
-  }
-
  
 .blClr{
     background: #00c6ff;  /* fallback for old browsers */
@@ -87,24 +80,57 @@ background: linear-gradient(to top, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Fir
   .vh100body{
     height: 100vh !important;
   }
-  .wdthh90{
-    padding-right:0 !important;
-    max-width: 64% !important;
+  .chatField
+  {
+    height: 85vh !important;
   }
+
+  // .availableUsersField{
+  //   // height:60vh;
+
+  // }
+
+.fixChatRight{
+  position: sticky;
+  top: 3.7em !important;
+  right: 0;
+}
   .msgField
   {
     overflow: auto; 
     background-image: linear-gradient(to bottom,#b4a0a4,#d5c9cd, #E9E9E9,#ffffff);
-    height:60vh !important;
-    max-height:60vh!important;
+    height:75vh;
+    max-height:75vh;
   }
   .msgComposeField{
-    height:15vh !important;
-    max-height:15vh !important;
+    // height:15vh !important;
+    // max-height:15vh !important;
   }
-
+  .wdthh90{
+    padding-right:0 !important;
+    max-width: 64% !important;
+  }
   .bg-mango{
   background: #ffe259;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to bottom, #ffa751, #ffe259);  /* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to  , #ffa751, #ffe259);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to bottom, #ffa751, #ffe259); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
+
+.bg-grayGradient{
+  background-image: linear-gradient(to left,#b4a0a4,#d5c9cd, #E9E9E9,#ffffff);
+
+}
+
+.stickyNavbar{
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+  .timestamp{
+    font-size: 0.5rem;
+  }
+
+
+  .pt-23{
+  padding-top: 2.3em !important;
+}

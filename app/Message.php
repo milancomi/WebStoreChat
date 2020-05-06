@@ -13,7 +13,7 @@ class Message extends Model
         'from', 'to', 'text'
     ];
     protected $casts = [
-        'created_at' => 'datetime:m/d h:m',
+        'created_at' => 'datetime:h:m:s m/d ',
     ];
 
  

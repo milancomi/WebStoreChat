@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessageEvent;
 use App\Message;
 use App\User;
 use Carbon\Carbon;
@@ -71,7 +72,7 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-
+        broadcast(new NewMessageEvent($msg));
         return response()->json($msg);
     }
 }

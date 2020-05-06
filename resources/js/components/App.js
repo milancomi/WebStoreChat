@@ -16,8 +16,7 @@ export default class App extends Component {
     this.state = {
       id: id,
       loading: true,
-      whichComponentToShow: "Chat",
-      // whichComponentToShow: "ModalComponent",
+
 
     };
 
@@ -34,35 +33,28 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.whichComponentToShow === "Chat") {
-      return (
-        <div className="App">
-          <button
-            onClick={() => {
-              this.setState({ whichComponentToShow: "ModalComponent" });
-            }}
-          >
-            Oglasi
-          </button>
 
-          <Chat whichComponentToShow={this.state.whichComponentToShow} />
-        </div>
-      );
-    } else if (this.state.whichComponentToShow === "ModalComponent") {
       return (
-        <div className="App">
-          <button
-            onClick={() => {
-              this.setState({ whichComponentToShow: "Chat" });
-            }}
-          >
-            Messages
-          </button>
+        <div className="App blClr">
+          <div className="row" style={{marginRight:'0px !important'}}>
+          <div className="col-sm-8">
           <ModalComponent
             userId={this.state.id}
             loading={this.state.loading}
             onChange={this.changeLoading}
           />
+          </div>
+          <div className="col-sm-4">
+
+
+<div className="fixChatRight">
+         <Chat/>
+            </div> 
+          </div>
+      
+          </div>
+
+
           {/* <ComponentOne count={5} userId={this.state.id} /> */}
           {/* {this.state.loading ? <POSTS/> : <i style={{fontSize: "200px"}} className="fa fa-refresh fa-5x fa-spin"></i>} */}
 
@@ -101,8 +93,7 @@ componentDidMount(){
 
 
 */
-    return null;
-  }
+
 }
 
 if (document.getElementById("app")) {

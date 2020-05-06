@@ -91586,9 +91586,7 @@ var App = /*#__PURE__*/function (_Component) {
     var id = document.getElementById("app").attributes["data-user-id"].value;
     _this.state = {
       id: id,
-      loading: true,
-      whichComponentToShow: "Chat" // whichComponentToShow: "ModalComponent",
-
+      loading: true
     };
     _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this));
     return _this;
@@ -91604,61 +91602,48 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      if (this.state.whichComponentToShow === "Chat") {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "App"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: function onClick() {
-            _this2.setState({
-              whichComponentToShow: "ModalComponent"
-            });
-          }
-        }, "Oglasi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Chat__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          whichComponentToShow: this.state.whichComponentToShow
-        }));
-      } else if (this.state.whichComponentToShow === "ModalComponent") {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "App"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: function onClick() {
-            _this2.setState({
-              whichComponentToShow: "Chat"
-            });
-          }
-        }, "Messages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          userId: this.state.id,
-          loading: this.state.loading,
-          onChange: this.changeLoading
-        }), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "blink",
-          style: {
-            position: "absolute",
-            top: "30%",
-            left: "40%"
-          }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          style: {
-            fontSize: "300px"
-          },
-          className: "fa fa-refresh fa-5x fa-spin"
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)) : null);
-      }
-      /*
-      componentDidMount(){
-          const id = document.getElementById('app').attributes['data-user-id'].value;
-        let channel = Echo.private(`user.${id}`);
-        channel.listen('.UserEvent', function (data){
-          console.log(data);
-      });
-      });
-      
-      */
-
-
-      return null;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "App blClr"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row",
+        style: {
+          marginRight: '0px !important'
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-8"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        userId: this.state.id,
+        loading: this.state.loading,
+        onChange: this.changeLoading
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-4"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "fixChatRight"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Chat__WEBPACK_IMPORTED_MODULE_4__["default"], null)))), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "blink",
+        style: {
+          position: "absolute",
+          top: "30%",
+          left: "40%"
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        style: {
+          fontSize: "300px"
+        },
+        className: "fa fa-refresh fa-5x fa-spin"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)) : null);
     }
+    /*
+    componentDidMount(){
+        const id = document.getElementById('app').attributes['data-user-id'].value;
+      let channel = Echo.private(`user.${id}`);
+      channel.listen('.UserEvent', function (data){
+        console.log(data);
+    });
+    });
+    
+    */
+
   }]);
 
   return App;
@@ -91827,6 +91812,15 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           users: response.data
         });
       });
+      console.log("LOGED USER" + id);
+      var msgChannel = Echo["private"]("messages.".concat(id));
+      msgChannel.listen('NewMessageEvent', function (e) {
+        if (_this4.state.chatWith == e.message.from) {
+          console.log(e);
+        }
+
+        alert("WHATEVER");
+      });
     }
   }, {
     key: "render",
@@ -91835,26 +91829,10 @@ var Chat = /*#__PURE__*/function (_React$Component) {
 
       var i = 1;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
+        className: "row chatField pr-0"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row chatField"
+        className: "col-sm-7 pr-1"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-12 col-sm-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "User:"), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          onClick: function onClick() {
-            return _this5.msgsById(users.id);
-          },
-          className: "list-group",
-          key: users.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          className: "list-group-item d-flex align-items-center"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "badge badge-primary badge-pill"
-        }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-7 "
-      }, this.state.messages.length == 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, " Select user") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Messages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField"
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91868,12 +91846,16 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         }, messages.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "triangle-left"
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-sm-3"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, messages.created_at))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-3 pl-1 pr-0 justify-content-md-center pt-23"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "timestamp text-center align-bottom font-italic"
+        }, messages.created_at))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row pr-0"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-sm-4"
-        }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, messages.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-3 justify-content-md-center pt-23"
+        }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "timestamp text-center align-bottom font-italic"
+        }, messages.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-sm-8 rounded-left wdthh90 blClr text-white border border-dark mb-3 "
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: ""
@@ -91890,7 +91872,21 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           _this5.messagesEnd = el;
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-7 offset-md-3 msgComposeField"
+        className: "col-sm-5 pl-0 availableUsersField"
+      }, this.state.users.length == 0 ? null : this.state.users.map(function (users) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          onClick: function onClick() {
+            return _this5.msgsById(users.id);
+          },
+          className: "list-group",
+          key: users.id
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "list-group-item d-flex align-items-center"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "badge badge-primary badge-pill"
+        }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-7 pr-1 msgComposeField"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         onKeyDown: this.submitMessage,
         style: {
@@ -91905,7 +91901,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         value: this.state.messageContent,
         id: "post_content",
         name: "content"
-      }))));
+      })));
     }
   }]);
 
@@ -92417,8 +92413,8 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       var _this4 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
-      var channel = Echo.channel("posts");
-      channel.listen(".postE", function (data) {
+      var postChannel = Echo.channel("posts");
+      postChannel.listen(".postE", function (data) {
         _this4.loadingStatus(true);
 
         console.log(data.post);
@@ -92448,7 +92444,51 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         color: "primary",
         className: "col-md-2 offset-md-5",
         onClick: this.toggle
-      }, "Post +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+      }, "Post +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row pt-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid"
+      }, this.state.posts.length == 0 ? null : this.state.posts.map(function (posts) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: posts.id
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "card col col-sm-9 mt-4 mb-2 offset-sm-2 divider "
+        }, posts.newMessage == true ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-success alert-block"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "close",
+          "data-dismiss": "alert"
+        }, "\xD7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "New Post")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "card-body"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+          className: "card-title"
+        }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "User:", posts.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: "card-text"
+        }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "#",
+          className: "btn bg-light rounded-circle"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa icon-4x text-danger fa-heart",
+          "aria-hidden": "true"
+        })), typeof posts.files[0] !== "undefined" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_image_appear__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          placeholder: true,
+          src: posts.files[0].file_title,
+          className: "post_img mx-auto d-block",
+          placeholderClass: "mx-auto d-block"
+        }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+          "data-msg-post-id": posts.id,
+          "data-msg-post-name": posts.title,
+          "data-msg-for-user-id": posts.user.id,
+          "data-msg-for-user-name": posts.user.name,
+          color: "success",
+          className: "col-md-4",
+          onClick: _this5.toggle2
+        }, "Ask: ", posts.user.name, "    ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-comments icon-4x",
+          "aria-hidden": "true"
+        })))));
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
         isOpen: this.state.modal
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
@@ -92539,49 +92579,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
         onClick: this.toggle2
-      }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Posts"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid"
-      }, this.state.posts.length == 0 ? null : this.state.posts.map(function (posts) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: posts.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card col col-lg-6 mt-4 mb-2 offset-md-3 divider "
-        }, posts.newMessage == true ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "alert alert-success alert-block"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          type: "button",
-          className: "close",
-          "data-dismiss": "alert"
-        }, "\xD7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "New Post")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card-body"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-          className: "card-title"
-        }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "User:", posts.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-          className: "card-text"
-        }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: "#",
-          className: "btn bg-light rounded-circle"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa icon-4x text-danger fa-heart",
-          "aria-hidden": "true"
-        })), typeof posts.files[0] !== "undefined" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_image_appear__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          placeholder: true,
-          src: posts.files[0].file_title,
-          className: "post_img mx-auto d-block",
-          placeholderClass: "mx-auto d-block"
-        }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-          "data-msg-post-id": posts.id,
-          "data-msg-post-name": posts.title,
-          "data-msg-for-user-id": posts.user.id,
-          "data-msg-for-user-name": posts.user.name,
-          color: "success",
-          className: "col-md-4",
-          onClick: _this5.toggle2
-        }, "Ask: ", posts.user.name, "    ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-comments icon-4x",
-          "aria-hidden": "true"
-        })))));
-      }))));
+      }, "Cancel")))));
     }
   }]);
 

@@ -78,38 +78,31 @@ class Chat extends React.Component {
       console.log(response.data);
       this.setState({ users: response.data });
     });
+
+    console.log("LOGED USER"+id);
+    let msgChannel = Echo.private(`messages.${id}`);
+    msgChannel.listen('NewMessageEvent',(e)=>{
+      if(this.state.chatWith == e.message.from)
+      {
+      console.log(e);
+      }
+      alert("WHATEVER");
+    });
+
   }
 
   render() {
+
     let i = 1;
     return (
-      <div className="container">
-        <div className="row chatField">
-          <div className="col-12 col-sm-3">
-            <h3>User:</h3>
-            {this.state.users.length == 0
-              ? null
-              : this.state.users.map((users) => (
-                  <ul
-                    onClick={() => this.msgsById(users.id)}
-                    className="list-group"
-                    key={users.id}
-                  >
-                    <li className="list-group-item d-flex align-items-center">
-                      <span className="badge badge-primary badge-pill">
-                        {i++}.
-                      </span>
-                      &nbsp;<strong>{users.name}</strong>
-                    </li>
-                  </ul>
-                ))}
-          </div>
-          <div className="col-sm-7 ">
-            {this.state.messages.length == 0 ? (
+      
+        <div className="row chatField pr-0">
+          <div className="col-sm-7 pr-1">
+            {/* {this.state.messages.length == 0 ? (
               <h3> Select user</h3>
             ) : (
               <h3>Messages</h3>
-            )}
+            )} */}
             <div className="col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField">
               {this.state.messages.length == 0
                 ? null
@@ -121,15 +114,15 @@ class Chat extends React.Component {
                             <p className="ml-3">{messages.text}</p>
                             <div className="triangle-left"></div>
                           </div>
-                          <div className="col-sm-3">
-                            <span>{messages.created_at}</span>
+                          <div className="col-sm-3 pl-1 pr-0 justify-content-md-center pt-23">
+                            <span className="timestamp text-center align-bottom font-italic">{messages.created_at}</span>
                           </div>
                         </div>
                       ) : (
                         <div className="row pr-0">
-                          <div className="col-sm-4">
-                            {" "}
-                            <span>{messages.created_at}</span>
+                          <div className="col-sm-3 justify-content-md-center pt-23">
+                            {" "}  
+                            <span className="timestamp text-center align-bottom font-italic">{messages.created_at}</span>
                           </div>
 
                           <div className="col-sm-8 rounded-left wdthh90 blClr text-white border border-dark mb-3 ">
@@ -149,8 +142,26 @@ class Chat extends React.Component {
               ></div>
             </div>
           </div>
+          <div className="col-sm-5 pl-0 availableUsersField" >
+            {this.state.users.length == 0
+              ? null
+              : this.state.users.map((users) => (
+                  <ul
+                    onClick={() => this.msgsById(users.id)}
+                    className="list-group"
+                    key={users.id}
+                  >
+                    <li className="list-group-item d-flex align-items-center">
+                      <span className="badge badge-primary badge-pill">
+                        {i++}.
+                      </span>
+                      &nbsp;<strong>{users.name}</strong>
+                    </li>
+                  </ul>
+                ))}
+          </div>
 
-          <div className="col-sm-7 offset-md-3 msgComposeField">
+          <div className="col-sm-7 pr-1 msgComposeField">
             <textarea
               onKeyDown={this.submitMessage}
               style={{ resize: "none" }}
@@ -166,7 +177,6 @@ class Chat extends React.Component {
             />
           </div>
         </div>
-      </div>
     );
   }
 }

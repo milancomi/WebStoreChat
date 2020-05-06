@@ -155,14 +155,15 @@ export default class ModalComponent extends React.Component {
   componentDidMount() {
     const id = document.getElementById("app").attributes["data-user-id"].value;
 
-    let channel = Echo.channel("posts");
+    let postChannel = Echo.channel("posts");
 
-    channel.listen(".postE", (data) => {
+    postChannel.listen(".postE", (data) => {
       this.loadingStatus(true);
       console.log(data.post);
       this.setState({ posts: [data.post, ...this.state.posts] });
       this.loadingStatus(false);
     });
+
 
     axios
       .get(`${window.siteurl}/get_all_posts`)
@@ -185,6 +186,65 @@ export default class ModalComponent extends React.Component {
           Post +
         </Button>
 
+        
+        <div className="row pt-3">
+          <div className="container-fluid">
+            {this.state.posts.length == 0
+              ? null
+              : this.state.posts.map((posts) => (
+                  <div key={posts.id}>
+                    <div className="card col col-sm-9 mt-4 mb-2 offset-sm-2 divider ">
+                      {posts.newMessage == true ? (
+                        <div className="alert alert-success alert-block">
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                          >
+                            ×
+                          </button>
+                          <strong>New Post</strong>
+                        </div>
+                      ) : null}
+                      <div className="card-body">
+
+                        <h5 className="card-title">{posts.title}</h5>
+                        <p>User:{posts.user.name}</p>
+
+                        <p className="card-text">{posts.content}</p>
+                    
+                        <a href="#" className="btn bg-light rounded-circle">
+                          <i
+                            className="fa icon-4x text-danger fa-heart"
+                            aria-hidden="true"
+                          ></i>
+                        </a>
+                      {typeof posts.files[0] !== "undefined" ? (
+                        <ReactImageAppear
+                          placeholder
+                          src={posts.files[0].file_title}
+                          className="post_img mx-auto d-block"
+                          placeholderClass="mx-auto d-block"
+                        />
+                      ) : null}
+                        <Button
+                        data-msg-post-id={posts.id}
+                        data-msg-post-name={posts.title}
+                        data-msg-for-user-id={posts.user.id}
+                        data-msg-for-user-name={posts.user.name}
+                          color="success"
+                          className="col-md-4"
+                          onClick={this.toggle2}
+                        >
+                          Ask: {posts.user.name}    <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
+                        </Button>
+                  </div>
+                  </div>
+                  </div>
+
+                ))}
+          </div>
+        </div>
         <Modal isOpen={this.state.modal}>
           <form onSubmit={this.handleSubmit}>
             <ModalHeader>Add new Post</ModalHeader>
@@ -303,65 +363,6 @@ export default class ModalComponent extends React.Component {
         </Modal>
 
         {/* Modal message */}
-        <div>
-          <h1>Posts</h1>
-          <div className="container-fluid">
-            {this.state.posts.length == 0
-              ? null
-              : this.state.posts.map((posts) => (
-                  <div key={posts.id}>
-                    <div className="card col col-lg-6 mt-4 mb-2 offset-md-3 divider ">
-                      {posts.newMessage == true ? (
-                        <div className="alert alert-success alert-block">
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="alert"
-                          >
-                            ×
-                          </button>
-                          <strong>New Post</strong>
-                        </div>
-                      ) : null}
-                      <div className="card-body">
-
-                        <h5 className="card-title">{posts.title}</h5>
-                        <p>User:{posts.user.name}</p>
-
-                        <p className="card-text">{posts.content}</p>
-                    
-                        <a href="#" className="btn bg-light rounded-circle">
-                          <i
-                            className="fa icon-4x text-danger fa-heart"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      {typeof posts.files[0] !== "undefined" ? (
-                        <ReactImageAppear
-                          placeholder
-                          src={posts.files[0].file_title}
-                          className="post_img mx-auto d-block"
-                          placeholderClass="mx-auto d-block"
-                        />
-                      ) : null}
-                        <Button
-                        data-msg-post-id={posts.id}
-                        data-msg-post-name={posts.title}
-                        data-msg-for-user-id={posts.user.id}
-                        data-msg-for-user-name={posts.user.name}
-                          color="success"
-                          className="col-md-4"
-                          onClick={this.toggle2}
-                        >
-                          Ask: {posts.user.name}    <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
-                        </Button>
-                  </div>
-                  </div>
-                  </div>
-
-                ))}
-          </div>
-        </div>
       </div>
     );
   }
