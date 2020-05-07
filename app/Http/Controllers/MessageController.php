@@ -24,6 +24,17 @@ class MessageController extends Controller
         return response()->json($users);
     }
 
+    public function allMessagedUsers2($id)
+    {
+
+        $id = Auth::user()->id;
+        $from = Message::where('from', $id)->orWhere('to', $id)->pluck('from');
+        $to = Message::where('from', $id)->orWhere('to', $id)->pluck('to');
+
+        $users = User::where('id', '!=', $id)->whereIn('id', $from)->orWhereIn('id', $to)->where('id', '!=', $id)->get();
+
+        return $users;
+    }
     public function messageById($id)
     {
 
@@ -54,8 +65,8 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-
-        return response()->json($msg);
+        $users = $this->allMessagedUsers2($from);
+        return response()->json($users);
     }
 
 
@@ -72,7 +83,10 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-        broadcast(new NewMessageEvent($msg));
+       $users =  $this->allMessagedUsers2($to_user);
+        
+        broadcast(new NewMessageEvent($msg,$users));
         return response()->json($msg);
     }
+
 }

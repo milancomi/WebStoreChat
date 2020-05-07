@@ -15,6 +15,7 @@ export default class ModalComponent extends React.Component {
       upload_file: [],
       loading: props.loading,
 
+      users:[],
       modalMessage: false,
       messageFrom:props.userId,
       messageForUserId:"",
@@ -107,6 +108,9 @@ export default class ModalComponent extends React.Component {
       .post(uri,form)
       .then((response) => {
         console.log(response);
+        this.setState({
+          users:response.data
+        })
         this.loadingStatus(false);
       })
       .catch(function(error) {
@@ -236,7 +240,7 @@ export default class ModalComponent extends React.Component {
                           className="col-md-4"
                           onClick={this.toggle2}
                         >
-                          Ask: {posts.user.name}    <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
+                         <i className="fa fa-comments icon-4x" aria-hidden="true"></i>  with:  {posts.user.name}   
                         </Button>
                   </div>
                   </div>

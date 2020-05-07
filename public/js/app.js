@@ -91816,8 +91816,11 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       var msgChannel = Echo["private"]("messages.".concat(id));
       msgChannel.listen('NewMessageEvent', function (e) {
         if (_this4.state.chatWith == e.message.from) {
+          console.log(e);
+
           _this4.setState({
-            messages: [].concat(_toConsumableArray(_this4.state.messages), [e.message])
+            messages: [].concat(_toConsumableArray(_this4.state.messages), [e.message]),
+            users: e.users
           });
 
           _this4.scrollToBottom();
@@ -92257,6 +92260,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       published: false,
       upload_file: [],
       loading: props.loading,
+      users: [],
       modalMessage: false,
       messageFrom: props.userId,
       messageForUserId: "",
@@ -92367,6 +92371,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       var uri = "http://localhost:8000/new_message";
       axios.post(uri, form).then(function (response) {
         console.log(response);
+
+        _this2.setState({
+          users: response.data
+        });
 
         _this2.loadingStatus(false);
       })["catch"](function (error) {
@@ -92488,10 +92496,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           color: "success",
           className: "col-md-4",
           onClick: _this5.toggle2
-        }, "Ask: ", posts.user.name, "    ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-comments icon-4x",
           "aria-hidden": "true"
-        })))));
+        }), "  with:  ", posts.user.name))));
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
         isOpen: this.state.modal
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
