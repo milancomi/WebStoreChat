@@ -24,7 +24,7 @@ class MessageController extends Controller
         return response()->json($users);
     }
 
-    public function allMessagedUsers2($id)
+    public function getAllMessagedUsers($id)
     {
 
         $id = Auth::user()->id;
@@ -35,7 +35,7 @@ class MessageController extends Controller
 
         return $users;
     }
-    public function allMessagedUsers3($id)
+    public function allMessagedUsersInverseForBroadcast($id)
     {
 
         $from = Message::where('from', $id)->orWhere('to', $id)->pluck('from');
@@ -76,10 +76,10 @@ class MessageController extends Controller
             'text' => $message,
         ]);
 
-        $users =  $this->allMessagedUsers3($to_user);
+        $users =  $this->allMessagedUsersInverseForBroadcast($to_user);
         broadcast(new NewMessageEvent($msg,$users));
 
-        $users1 = $this->allMessagedUsers2($from);
+        $users1 = $this->getAllMessagedUsers($from);
         return response()->json($users1);
     }
 
@@ -97,7 +97,7 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-       $users =  $this->allMessagedUsers2($to_user);
+       $users = [];
         
         broadcast(new NewMessageEvent($msg,$users));
         return response()->json($msg);
