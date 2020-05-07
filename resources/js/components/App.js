@@ -43,7 +43,7 @@ export default class App extends Component {
       return (
         <div className="App blClr">
           <div className="row" style={{marginRight:'0px !important'}}>
-          <div className="col-sm-8">
+          <div className="col-sm-7">
           <ModalComponent
             userId={this.state.id}
             loading={this.state.loading}
@@ -51,7 +51,7 @@ export default class App extends Component {
             setAvailableUsers={this.setAvailableUsers}
           />
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-5">
 
 
 <div className="fixChatRight">

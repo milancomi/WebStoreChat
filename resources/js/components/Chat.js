@@ -11,8 +11,13 @@ class Chat extends React.Component {
       users: props.users,
       messages: [],
       chatWith: "",
+      chatWithUser:"",
       messageContent: "",
+      chatFieldVisible:true,
+
     };
+
+    this.chatToogleVisibility= this.chatToogleVisibility.bind(this);
     this.msgsById = this.msgsById.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
     this.submitMessage = this.submitMessage.bind(this);
@@ -31,6 +36,11 @@ class Chat extends React.Component {
     element.scrollIntoView({ behavior: "smooth" });
   }
 
+  chatToogleVisibility(){
+    this.setState({
+    chatFieldVisible: !this.state.chatFieldVisible,
+  });
+  }
   submitMessage(e) {
     let receiver_id = this.state.chatWith;
     if (e.keyCode == 13) {
@@ -39,7 +49,7 @@ class Chat extends React.Component {
       } else {
         const form = {
           message: e.target.value,
-          to_user_id: this.state.chatWith,
+          to_user_id: receiver_id,
         };
     
          let uri = `${window.siteurl}/new_message_chat`;
@@ -62,13 +72,15 @@ class Chat extends React.Component {
 }
   msgsById(user_id) {
     this.setState({
+      chatFieldVisible: !this.state.chatFieldVisible,
       chatWith: user_id,
     });
 
     axios.get(`${window.siteurl}/messages/${user_id}`).then((response) => {
       console.log(response.data);
       this.setState({
-        messages: response.data,
+        messages: response.data.messages,
+        chatWithUser:response.data.user_name
       });
       this.scrollToBottom();
     });
@@ -107,15 +119,42 @@ class Chat extends React.Component {
   render() {
 
     let i = 1;
+    let chatVisibility = this.state.chatFieldVisible ? {display:'none'}  : {}
+    let availableUsersAlign = this.state.chatFieldVisible ? 'offset-sm-7' : ''
     return (
       
         <div className="row chatField pr-0">
-          <div className="col-sm-7 pr-1">
-            {/* {this.state.messages.length == 0 ? (
-              <h3> Select user</h3>
-            ) : (
-              <h3>Messages</h3>
-            )} */}
+          <div className="col-sm-7 pr-0" style={chatVisibility} >
+              <div className="col-sm-12 bg-mango pt-3 pl-1 pr-1">
+                <div className="row mr-0 ml-0">
+                  <div className="col-sm-6">
+                  <h3><strong>{this.state.chatWithUser}</strong></h3>
+
+                  </div>
+                  <div className="col-sm-3 justify-content-center "><div className="dropdown">
+  <button className="btn dropdown-toggle font-weight-bold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<strong> . . .</strong>  </button>
+  <div className="dropdown-menu pt-0 pb-0" aria-labelledby="dropdownMenuButton">
+    <a className="dropdown-item bg-success text-white font-weight-bold ltr-spacing" href="#"><i className="fa fa-id-card" aria-hidden="true"></i>
+ &nbsp; Prikazi oglase</a>
+    <a className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing" href="#"><i className="fa fa-phone" aria-hidden="true"></i>
+    &nbsp; br Telefona</a>
+    <a className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing" href="#"> <i className="fa fa-envelope" aria-hidden="true"></i>
+    &nbsp;E-mail</a>
+    <a className="dropdown-item bg-pretyRed text-white font-weight-bold ltr-spacing" href="#"><i className="fa fa-trash" aria-hidden="true"></i>
+    &nbsp; Obrisi poruke</a>
+
+
+  </div>
+</div></div>
+                <div className="col-sm-3 justify-content-center" onClick={this.chatToogleVisibility}>
+                <i className="fa fa-times" id="closeIcon" aria-hidden="true"></i>
+
+                </div>
+                </div>
+                
+              </div>
+
             <div className="col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField">
               {this.state.messages.length == 0
                 ? null
@@ -155,7 +194,16 @@ class Chat extends React.Component {
               ></div>
             </div>
           </div>
-          <div className="col-sm-5 pl-0 availableUsersField" >
+          <div className={`col-sm-5 pl-0 availableUsersField ${availableUsersAlign}`} >
+          <ul                    className="list-group"
+
+                  >
+                    <li className="list-group-item d-flex align-items-center">
+                      <span className="badge badge-primary badge-pill">
+                      </span>
+                    Connected with:
+                    </li>
+                  </ul>
             {this.state.users.length == 0
               ? null
               : this.state.users.map((users) => (
@@ -172,9 +220,10 @@ class Chat extends React.Component {
                     </li>
                   </ul>
                 ))}
+                
           </div>
 
-          <div className="col-sm-7 pr-1 msgComposeField">
+          <div className="col-sm-7 pr-1 msgComposeField" style={chatVisibility} >
             <textarea
               onKeyDown={this.submitMessage}
               style={{ resize: "none" }}

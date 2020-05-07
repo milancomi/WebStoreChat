@@ -6,6 +6,11 @@ export default class ModalComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // APP depended states
+      loading: props.loading,
+      users:[],
+
+      // POST STATES
       modal: false,
       title: "",
       posts: [],
@@ -13,9 +18,9 @@ export default class ModalComponent extends React.Component {
       content: "",
       published: false,
       upload_file: [],
-      loading: props.loading,
+      
 
-      users:[],
+      // MESSAGE STATES
       modalMessage: false,
       messageFrom:props.userId,
       messageForUserId:"",
@@ -26,26 +31,43 @@ export default class ModalComponent extends React.Component {
 
     };
 
-    this.toggle = this.toggle.bind(this);
-    this.toggle2 = this.toggle2.bind(this);
-
+    this.modalPost = this.modalPost.bind(this);
+    this.modalAskMessage = this.modalAskMessage.bind(this);
+  
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeContent = this.handleChangeContent.bind(this);
     this.handleChangePublished = this.handleChangePublished.bind(this);
     this.handleChangeFile = this.handleChangeFile.bind(this);
-    this.loadingStatus = this.loadingStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+
+    this.loadingStatus = this.loadingStatus.bind(this);
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
     this.handleChangeMessage = this.handleChangeMessage.bind(this);
 
   }
 
-  toggle() {
+  
+  loadingStatus(bool) {
+    this.props.onChange(bool);
+    this.setState({ loading: bool.value });
+  }
+  
+
+
+  setAvailableUsers(users) {
+    this.props.setAvailableUsers(users);
+    this.setState({ users: users });
+  }
+
+
+  modalPost() {
     this.setState({
       modal: !this.state.modal,
     });
   }
-  toggle2(event) {
+  modalAskMessage(event) {
+    // toogle prevention
     if(typeof event.target.attributes['data-msg-post-id'] !== "undefined" )
     {
     const postId=event.target.attributes['data-msg-post-id'].value;
@@ -79,18 +101,8 @@ export default class ModalComponent extends React.Component {
     this.setState({ upload_file: event.target.files[0] });
   }
 
-  loadingStatus(bool) {
-    this.props.onChange(bool);
-    this.setState({ loading: bool.value });
-  }
   handleChangeMessage(event){
     this.setState({ message: event.target.value });
-  }
-
-
-  setAvailableUsers(users) {
-    this.props.setAvailableUsers(users);
-    this.setState({ users: users });
   }
 
   handleMessageSubmit(event) {
@@ -109,7 +121,7 @@ export default class ModalComponent extends React.Component {
       modalMessage: !this.state.modalMessage,
     });
 
-     let uri = "http://localhost:8000/new_message";
+     let uri=`${window.siteurl}/new_message`;
 
     axios
       .post(uri,form)
@@ -136,18 +148,12 @@ export default class ModalComponent extends React.Component {
       headers: { "content-type": "multipart/form-data" },
     };
 
-    const form = {
-      title: this.state.title,
-      content: this.state.content,
-      published: this.state.published,
-      upload_file: this.state.upload_file,
-    };
 
     this.setState({
       modal: !this.state.modal,
     });
 
-    let uri = "http://localhost:8000/posts";
+    let uri =`${window.siteurl}/posts`;
 
     axios
       .post(uri, formData, config)
@@ -190,7 +196,7 @@ export default class ModalComponent extends React.Component {
         <Button
           color="primary"
           className="col-md-2 offset-md-5"
-          onClick={this.toggle}
+          onClick={this.modalPost}
         >
           Post +
         </Button>
@@ -243,7 +249,7 @@ export default class ModalComponent extends React.Component {
                         data-msg-for-user-name={posts.user.name}
                           color="success"
                           className="col-md-4"
-                          onClick={this.toggle2}
+                          onClick={this.modalAskMessage}
                         >
                          <i className="fa fa-comments icon-4x" aria-hidden="true"></i>  with:  {posts.user.name}   
                         </Button>
@@ -313,7 +319,7 @@ export default class ModalComponent extends React.Component {
                 color="primary"
                 className="btn btn-primary"
               />
-              <Button color="danger" onClick={this.toggle}>
+              <Button color="danger" onClick={this.modalPost}>
                 Cancel
               </Button>
             </ModalFooter>
@@ -364,7 +370,7 @@ export default class ModalComponent extends React.Component {
                 color="primary"
                 className="btn btn-primary"
               />
-              <Button color="danger" onClick={this.toggle2}>
+              <Button color="danger" onClick={this.modalAskMessage}>
                 Cancel
               </Button>
             </ModalFooter>

@@ -91619,14 +91619,14 @@ var App = /*#__PURE__*/function (_Component) {
           marginRight: '0px !important'
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-8"
+        className: "col-sm-7"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
         userId: this.state.id,
         loading: this.state.loading,
         onChange: this.changeLoading,
         setAvailableUsers: this.setAvailableUsers
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4"
+        className: "col-sm-5"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "fixChatRight"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Chat__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -91737,8 +91737,11 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       users: props.users,
       messages: [],
       chatWith: "",
-      messageContent: ""
+      chatWithUser: "",
+      messageContent: "",
+      chatFieldVisible: true
     };
+    _this.chatToogleVisibility = _this.chatToogleVisibility.bind(_assertThisInitialized(_this));
     _this.msgsById = _this.msgsById.bind(_assertThisInitialized(_this));
     _this.scrollToBottom = _this.scrollToBottom.bind(_assertThisInitialized(_this));
     _this.submitMessage = _this.submitMessage.bind(_assertThisInitialized(_this));
@@ -91771,6 +91774,13 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "chatToogleVisibility",
+    value: function chatToogleVisibility() {
+      this.setState({
+        chatFieldVisible: !this.state.chatFieldVisible
+      });
+    }
+  }, {
     key: "submitMessage",
     value: function submitMessage(e) {
       var _this2 = this;
@@ -91783,7 +91793,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         } else {
           var form = {
             message: e.target.value,
-            to_user_id: this.state.chatWith
+            to_user_id: receiver_id
           };
           var uri = "".concat(window.siteurl, "/new_message_chat");
           axios.post(uri, form).then(function (response) {
@@ -91805,13 +91815,15 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       var _this3 = this;
 
       this.setState({
+        chatFieldVisible: !this.state.chatFieldVisible,
         chatWith: user_id
       });
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
         console.log(response.data);
 
         _this3.setState({
-          messages: response.data
+          messages: response.data.messages,
+          chatWithUser: response.data.user_name
         });
 
         _this3.scrollToBottom();
@@ -91860,11 +91872,67 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       var _this5 = this;
 
       var i = 1;
+      var chatVisibility = this.state.chatFieldVisible ? {
+        display: 'none'
+      } : {};
+      var availableUsersAlign = this.state.chatFieldVisible ? 'offset-sm-7' : '';
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row chatField pr-0"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-7 pr-1"
+        className: "col-sm-7 pr-0",
+        style: chatVisibility
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-12 bg-mango pt-3 pl-1 pr-1"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mr-0 ml-0"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-6"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.chatWithUser))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-3 justify-content-center "
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "dropdown"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn dropdown-toggle font-weight-bold",
+        type: "button",
+        id: "dropdownMenuButton",
+        "data-toggle": "dropdown",
+        "aria-haspopup": "true",
+        "aria-expanded": "false"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " . . ."), "  "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "dropdown-menu pt-0 pb-0",
+        "aria-labelledby": "dropdownMenuButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "dropdown-item bg-success text-white font-weight-bold ltr-spacing",
+        href: "#"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-id-card",
+        "aria-hidden": "true"
+      }), "\xA0 Prikazi oglase"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "dropdown-item bg-secondary text-white font-weight-bold ltr-spacing",
+        href: "#"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-phone",
+        "aria-hidden": "true"
+      }), "\xA0 br Telefona"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "dropdown-item bg-secondary text-white font-weight-bold ltr-spacing",
+        href: "#"
+      }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-envelope",
+        "aria-hidden": "true"
+      }), "\xA0E-mail"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "dropdown-item bg-pretyRed text-white font-weight-bold ltr-spacing",
+        href: "#"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-trash",
+        "aria-hidden": "true"
+      }), "\xA0 Obrisi poruke")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-3 justify-content-center",
+        onClick: this.chatToogleVisibility
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-times",
+        id: "closeIcon",
+        "aria-hidden": "true"
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-12 border border-secondary rounded-lg pt-3 bg-white msgField"
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91904,8 +91972,14 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           _this5.messagesEnd = el;
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-5 pl-0 availableUsersField"
-      }, this.state.users.length == 0 ? null : this.state.users.map(function (users) {
+        className: "col-sm-5 pl-0 availableUsersField ".concat(availableUsersAlign)
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "list-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "list-group-item d-flex align-items-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "badge badge-primary badge-pill"
+      }), "Connected with:")), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
             return _this5.msgsById(users.id);
@@ -91918,7 +91992,8 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           className: "badge badge-primary badge-pill"
         }, i++, "."), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, users.name)));
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-7 pr-1 msgComposeField"
+        className: "col-sm-7 pr-1 msgComposeField",
+        style: chatVisibility
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         onKeyDown: this.submitMessage,
         style: {
@@ -92277,6 +92352,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
+      // APP depended states
+      loading: props.loading,
+      users: [],
+      // POST STATES
       modal: false,
       title: "",
       posts: [],
@@ -92284,8 +92363,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       content: "",
       published: false,
       upload_file: [],
-      loading: props.loading,
-      users: [],
+      // MESSAGE STATES
       modalMessage: false,
       messageFrom: props.userId,
       messageForUserId: "",
@@ -92294,29 +92372,46 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       messageForPostName: "",
       message: ""
     };
-    _this.toggle = _this.toggle.bind(_assertThisInitialized(_this));
-    _this.toggle2 = _this.toggle2.bind(_assertThisInitialized(_this));
+    _this.modalPost = _this.modalPost.bind(_assertThisInitialized(_this));
+    _this.modalAskMessage = _this.modalAskMessage.bind(_assertThisInitialized(_this));
     _this.handleChangeTitle = _this.handleChangeTitle.bind(_assertThisInitialized(_this));
     _this.handleChangeContent = _this.handleChangeContent.bind(_assertThisInitialized(_this));
     _this.handleChangePublished = _this.handleChangePublished.bind(_assertThisInitialized(_this));
     _this.handleChangeFile = _this.handleChangeFile.bind(_assertThisInitialized(_this));
-    _this.loadingStatus = _this.loadingStatus.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.loadingStatus = _this.loadingStatus.bind(_assertThisInitialized(_this));
     _this.handleMessageSubmit = _this.handleMessageSubmit.bind(_assertThisInitialized(_this));
     _this.handleChangeMessage = _this.handleChangeMessage.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(ModalComponent, [{
-    key: "toggle",
-    value: function toggle() {
+    key: "loadingStatus",
+    value: function loadingStatus(bool) {
+      this.props.onChange(bool);
+      this.setState({
+        loading: bool.value
+      });
+    }
+  }, {
+    key: "setAvailableUsers",
+    value: function setAvailableUsers(users) {
+      this.props.setAvailableUsers(users);
+      this.setState({
+        users: users
+      });
+    }
+  }, {
+    key: "modalPost",
+    value: function modalPost() {
       this.setState({
         modal: !this.state.modal
       });
     }
   }, {
-    key: "toggle2",
-    value: function toggle2(event) {
+    key: "modalAskMessage",
+    value: function modalAskMessage(event) {
+      // toogle prevention
       if (typeof event.target.attributes['data-msg-post-id'] !== "undefined") {
         var postId = event.target.attributes['data-msg-post-id'].value;
         var postName = event.target.attributes['data-msg-post-name'].value;
@@ -92363,26 +92458,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "loadingStatus",
-    value: function loadingStatus(bool) {
-      this.props.onChange(bool);
-      this.setState({
-        loading: bool.value
-      });
-    }
-  }, {
     key: "handleChangeMessage",
     value: function handleChangeMessage(event) {
       this.setState({
         message: event.target.value
-      });
-    }
-  }, {
-    key: "setAvailableUsers",
-    value: function setAvailableUsers(users) {
-      this.props.setAvailableUsers(users);
-      this.setState({
-        users: users
       });
     }
   }, {
@@ -92401,7 +92480,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       this.setState({
         modalMessage: !this.state.modalMessage
       });
-      var uri = "http://localhost:8000/new_message";
+      var uri = "".concat(window.siteurl, "/new_message");
       axios.post(uri, form).then(function (response) {
         console.log(response);
 
@@ -92430,16 +92509,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           "content-type": "multipart/form-data"
         }
       };
-      var form = {
-        title: this.state.title,
-        content: this.state.content,
-        published: this.state.published,
-        upload_file: this.state.upload_file
-      };
       this.setState({
         modal: !this.state.modal
       });
-      var uri = "http://localhost:8000/posts";
+      var uri = "".concat(window.siteurl, "/posts");
       axios.post(uri, formData, config).then(function (response) {
         _this3.setState({
           posts: response.data.postData
@@ -92486,7 +92559,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "primary",
         className: "col-md-2 offset-md-5",
-        onClick: this.toggle
+        onClick: this.modalPost
       }, "Post +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row pt-3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92526,7 +92599,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           "data-msg-for-user-name": posts.user.name,
           color: "success",
           className: "col-md-4",
-          onClick: _this5.toggle2
+          onClick: _this5.modalAskMessage
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-comments icon-4x",
           "aria-hidden": "true"
@@ -92582,7 +92655,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         className: "btn btn-primary"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
-        onClick: this.toggle
+        onClick: this.modalPost
       }, "Cancel")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
         isOpen: this.state.modalMessage
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -92621,7 +92694,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         className: "btn btn-primary"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
-        onClick: this.toggle2
+        onClick: this.modalAskMessage
       }, "Cancel")))));
     }
   }]);
