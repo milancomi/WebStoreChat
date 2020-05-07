@@ -35,6 +35,16 @@ class MessageController extends Controller
 
         return $users;
     }
+    public function allMessagedUsers3($id)
+    {
+
+        $from = Message::where('from', $id)->orWhere('to', $id)->pluck('from');
+        $to = Message::where('from', $id)->orWhere('to', $id)->pluck('to');
+
+        $users = User::where('id', '!=', $id)->whereIn('id', $from)->orWhereIn('id', $to)->where('id', '!=', $id)->get();
+
+        return $users;
+    }
     public function messageById($id)
     {
 
@@ -65,8 +75,12 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-        $users = $this->allMessagedUsers2($from);
-        return response()->json($users);
+
+        $users =  $this->allMessagedUsers3($to_user);
+        broadcast(new NewMessageEvent($msg,$users));
+
+        $users1 = $this->allMessagedUsers2($from);
+        return response()->json($users1);
     }
 
 

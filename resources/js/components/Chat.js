@@ -8,7 +8,7 @@ class Chat extends React.Component {
 
     this.state = {
       id: "",
-      users: [],
+      users: props.users,
       messages: [],
       chatWith: "",
       messageContent: "",
@@ -18,7 +18,11 @@ class Chat extends React.Component {
     this.submitMessage = this.submitMessage.bind(this);
     this.handleChangeNewMessageContent =this.handleChangeNewMessageContent.bind(this);
   }
-
+  componentWillReceiveProps (nextProps) {
+    if (this.props.users !== nextProps.users) {
+      this.setState({users: nextProps.users});
+    }
+  }
   handleChangeNewMessageContent(event) {
     this.setState({ messageContent: event.target.value });
   }
@@ -93,6 +97,9 @@ class Chat extends React.Component {
         this.scrollToBottom();
         return;
       }
+      this.setState({
+        users:e.users
+      });
     });
 
   }

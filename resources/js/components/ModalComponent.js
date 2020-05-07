@@ -86,6 +86,13 @@ export default class ModalComponent extends React.Component {
   handleChangeMessage(event){
     this.setState({ message: event.target.value });
   }
+
+
+  setAvailableUsers(users) {
+    this.props.setAvailableUsers(users);
+    this.setState({ users: users });
+  }
+
   handleMessageSubmit(event) {
     event.preventDefault();
 
@@ -108,9 +115,7 @@ export default class ModalComponent extends React.Component {
       .post(uri,form)
       .then((response) => {
         console.log(response);
-        this.setState({
-          users:response.data
-        })
+        this.setAvailableUsers(response.data);
         this.loadingStatus(false);
       })
       .catch(function(error) {

@@ -16,16 +16,22 @@ export default class App extends Component {
     this.state = {
       id: id,
       loading: true,
+      users:[]
 
 
     };
 
     this.changeLoading = this.changeLoading.bind(this);
-
+    this.setAvailableUsers = this.setAvailableUsers.bind(this);
   }
 
   
-
+  setAvailableUsers(users)
+  {
+    this.setState({
+      users:users
+    });
+  }
   changeLoading(bool) {
     this.setState({
       loading: bool,
@@ -42,13 +48,16 @@ export default class App extends Component {
             userId={this.state.id}
             loading={this.state.loading}
             onChange={this.changeLoading}
+            setAvailableUsers={this.setAvailableUsers}
           />
           </div>
           <div className="col-sm-4">
 
 
 <div className="fixChatRight">
-         <Chat/>
+         <Chat
+         users={this.state.users}
+         />
             </div> 
           </div>
       

@@ -91586,13 +91586,22 @@ var App = /*#__PURE__*/function (_Component) {
     var id = document.getElementById("app").attributes["data-user-id"].value;
     _this.state = {
       id: id,
-      loading: true
+      loading: true,
+      users: []
     };
     _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this));
+    _this.setAvailableUsers = _this.setAvailableUsers.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
+    key: "setAvailableUsers",
+    value: function setAvailableUsers(users) {
+      this.setState({
+        users: users
+      });
+    }
+  }, {
     key: "changeLoading",
     value: function changeLoading(bool) {
       this.setState({
@@ -91614,12 +91623,15 @@ var App = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
         userId: this.state.id,
         loading: this.state.loading,
-        onChange: this.changeLoading
+        onChange: this.changeLoading,
+        setAvailableUsers: this.setAvailableUsers
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "fixChatRight"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Chat__WEBPACK_IMPORTED_MODULE_4__["default"], null)))), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Chat__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        users: this.state.users
+      })))), this.state.loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "blink",
         style: {
           position: "absolute",
@@ -91722,7 +91734,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       id: "",
-      users: [],
+      users: props.users,
       messages: [],
       chatWith: "",
       messageContent: ""
@@ -91735,6 +91747,15 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(Chat, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.users !== nextProps.users) {
+        this.setState({
+          users: nextProps.users
+        });
+      }
+    }
+  }, {
     key: "handleChangeNewMessageContent",
     value: function handleChangeNewMessageContent(event) {
       this.setState({
@@ -91827,6 +91848,10 @@ var Chat = /*#__PURE__*/function (_React$Component) {
 
           return;
         }
+
+        _this4.setState({
+          users: e.users
+        });
       });
     }
   }, {
@@ -92353,6 +92378,14 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "setAvailableUsers",
+    value: function setAvailableUsers(users) {
+      this.props.setAvailableUsers(users);
+      this.setState({
+        users: users
+      });
+    }
+  }, {
     key: "handleMessageSubmit",
     value: function handleMessageSubmit(event) {
       var _this2 = this;
@@ -92372,9 +92405,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       axios.post(uri, form).then(function (response) {
         console.log(response);
 
-        _this2.setState({
-          users: response.data
-        });
+        _this2.setAvailableUsers(response.data);
 
         _this2.loadingStatus(false);
       })["catch"](function (error) {
