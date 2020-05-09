@@ -247,8 +247,7 @@ export default class ModalComponent extends React.Component {
                         data-msg-post-name={posts.title}
                         data-msg-for-user-id={posts.user.id}
                         data-msg-for-user-name={posts.user.name}
-                          color="success"
-                          className="col-md-4"
+                          className="col-md-4 bg-redPretty"
                           onClick={this.modalAskMessage}
                         >
                          <i className="fa fa-comments icon-4x" aria-hidden="true"></i>  with:  {posts.user.name}   

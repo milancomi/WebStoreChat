@@ -105,4 +105,23 @@ class MessageController extends Controller
         return response()->json($msg);
     }
 
+    public function deleteAllMsgsById($id){
+
+
+        $auth_id = Auth::user()->id;
+        $messages = Message::where(function ($query) use ($auth_id, $id) {
+            return $query->where('from', $auth_id)
+                ->where('to', '=', $id);
+        })
+            ->orWhere(function ($query) use ($auth_id, $id) {
+                return $query->where('to', $auth_id)
+                    ->where('from', '=', $id);
+            })
+           ->delete();
+
+           $users = $this->getAllMessagedUsers($auth_id);
+
+        return response()->json($users);
+
+    }
 }

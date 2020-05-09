@@ -132,11 +132,25 @@ background: linear-gradient(to top, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Fir
     max-width: 64% !important;
   }
   .bg-mango{
-  background: #ffe259;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to  , #ffa751, #ffe259);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to bottom, #ffa751, #ffe259); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #f47a60;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to  , #f47a60, #f47a60);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #f47a60, #8d1c4f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
+  
+  .bg-blueLightPretty
+  {
+    background: #408ec6;
+  }
+
+  .bg-blueDarkPretty
+  {
+    background:#1e2761;
+  }
+
+  .bg-redPretty{
+    background:#8d1c4f;
+  }
 .bg-grayGradient{
   background-image: linear-gradient(to left,#b4a0a4,#d5c9cd, #E9E9E9,#ffffff);
 

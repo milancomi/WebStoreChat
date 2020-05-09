@@ -16,6 +16,7 @@ export default class App extends Component {
     this.state = {
       id: id,
       loading: true,
+      posts:[],
       users:[]
 
 
@@ -23,6 +24,7 @@ export default class App extends Component {
 
     this.changeLoading = this.changeLoading.bind(this);
     this.setAvailableUsers = this.setAvailableUsers.bind(this);
+    this.setPostsState= this.setPostsState.bind(this);
   }
 
   
@@ -30,6 +32,14 @@ export default class App extends Component {
   {
     this.setState({
       users:users
+    });
+  }
+
+
+  setPostsState(posts)
+  {
+    this.setState({
+      posts:posts
     });
   }
   changeLoading(bool) {

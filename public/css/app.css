@@ -11008,11 +11008,23 @@ html {
 }
 
 .bg-mango {
-  background: #ffe259;
+  background: #f47a60;
   /* fallback for old browsers */
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #ffa751, #ffe259);
+  background: linear-gradient(to bottom, #f47a60, #8d1c4f);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.bg-blueLightPretty {
+  background: #408ec6;
+}
+
+.bg-blueDarkPretty {
+  background: #1e2761;
+}
+
+.bg-redPretty {
+  background: #8d1c4f;
 }
 
 .bg-grayGradient {

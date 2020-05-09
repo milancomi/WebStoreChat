@@ -6,6 +6,7 @@ use App\DropFile;
 use App\Events\PostCreatedEvent;
 use Illuminate\Http\Request;
 use App\Post;
+use App\User;
 use Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,6 +38,12 @@ class PostController extends Controller
       return response()->json($posts);
     }
 
+    public function postsById($id)
+    {
+      $posts = Post::where('user_id',$id)->get();
+      return response()->json($posts);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *

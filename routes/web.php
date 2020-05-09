@@ -190,3 +190,6 @@ Route::get('/messages/{id}','MessageController@messageById');
 
 
 Route::post('/new_message_chat','MessageController@newMsgChat');
+
+Route::get('/delete_messages/{id}','MessageController@deleteAllMsgsById');
+Route::get('/posts_by_id/{id}','PostController@postsById');

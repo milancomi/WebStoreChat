@@ -91587,10 +91587,12 @@ var App = /*#__PURE__*/function (_Component) {
     _this.state = {
       id: id,
       loading: true,
+      posts: [],
       users: []
     };
     _this.changeLoading = _this.changeLoading.bind(_assertThisInitialized(_this));
     _this.setAvailableUsers = _this.setAvailableUsers.bind(_assertThisInitialized(_this));
+    _this.setPostsState = _this.setPostsState.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -91599,6 +91601,13 @@ var App = /*#__PURE__*/function (_Component) {
     value: function setAvailableUsers(users) {
       this.setState({
         users: users
+      });
+    }
+  }, {
+    key: "setPostsState",
+    value: function setPostsState(posts) {
+      this.setState({
+        posts: posts
       });
     }
   }, {
@@ -91746,6 +91755,8 @@ var Chat = /*#__PURE__*/function (_React$Component) {
     _this.scrollToBottom = _this.scrollToBottom.bind(_assertThisInitialized(_this));
     _this.submitMessage = _this.submitMessage.bind(_assertThisInitialized(_this));
     _this.handleChangeNewMessageContent = _this.handleChangeNewMessageContent.bind(_assertThisInitialized(_this));
+    _this.deleteAllMessages = _this.deleteAllMessages.bind(_assertThisInitialized(_this));
+    _this.showPostsById = _this.showPostsById.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -91810,9 +91821,27 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }
     }
   }, {
+    key: "deleteAllMessages",
+    value: function deleteAllMessages() {
+      axios.get("".concat(window.siteurl, "/delete_messages/").concat(this.state.chatWith)).then(function (response) {
+        console.log(response.data);
+      });
+    }
+  }, {
+    key: "showPostsById",
+    value: function showPostsById() {
+      var _this3 = this;
+
+      axios.get("".concat(window.siteurl, "/posts_by_id/").concat(this.state.chatWith)).then(function (response) {
+        _this3.setState({
+          posts: response.data
+        });
+      });
+    }
+  }, {
     key: "msgsById",
     value: function msgsById(user_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.setState({
         chatFieldVisible: !this.state.chatFieldVisible,
@@ -91821,18 +91850,18 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
         console.log(response.data);
 
-        _this3.setState({
+        _this4.setState({
           messages: response.data.messages,
           chatWithUser: response.data.user_name
         });
 
-        _this3.scrollToBottom();
+        _this4.scrollToBottom();
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this4 = this;
+      var _this5 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       this.setState({
@@ -91841,27 +91870,27 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("/users_messaged").then(function (response) {
         console.log(response.data);
 
-        _this4.setState({
+        _this5.setState({
           users: response.data
         });
       });
       console.log("LOGED USER" + id);
       var msgChannel = Echo["private"]("messages.".concat(id));
       msgChannel.listen('NewMessageEvent', function (e) {
-        if (_this4.state.chatWith == e.message.from) {
+        if (_this5.state.chatWith == e.message.from) {
           console.log(e);
 
-          _this4.setState({
-            messages: [].concat(_toConsumableArray(_this4.state.messages), [e.message]),
+          _this5.setState({
+            messages: [].concat(_toConsumableArray(_this5.state.messages), [e.message]),
             users: e.users
           });
 
-          _this4.scrollToBottom();
+          _this5.scrollToBottom();
 
           return;
         }
 
-        _this4.setState({
+        _this5.setState({
           users: e.users
         });
       });
@@ -91869,7 +91898,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var i = 1;
       var chatVisibility = this.state.chatFieldVisible ? {
@@ -91903,6 +91932,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         "aria-labelledby": "dropdownMenuButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "dropdown-item bg-success text-white font-weight-bold ltr-spacing",
+        onClick: this.showPostsById,
         href: "#"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-id-card",
@@ -91921,6 +91951,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         "aria-hidden": "true"
       }), "\xA0E-mail"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "dropdown-item bg-pretyRed text-white font-weight-bold ltr-spacing",
+        onClick: this.deleteAllMessages,
         href: "#"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-trash",
@@ -91937,7 +91968,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: messages.id
-        }, messages.from == _this5.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, messages.from == _this6.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "ml-3 pl-0 col-sm-8 rounded-right bg-mango border border-dark mb-3"
@@ -91969,7 +92000,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           clear: "both"
         },
         ref: function ref(el) {
-          _this5.messagesEnd = el;
+          _this6.messagesEnd = el;
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-5 pl-0 availableUsersField ".concat(availableUsersAlign)
@@ -91982,7 +92013,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }), "Connected with:")), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
-            return _this5.msgsById(users.id);
+            return _this6.msgsById(users.id);
           },
           className: "list-group",
           key: users.id
@@ -92003,7 +92034,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         rows: "3",
         overflow: "auto",
         onChange: function onChange(e) {
-          return _this5.handleChangeNewMessageContent(e);
+          return _this6.handleChangeNewMessageContent(e);
         },
         value: this.state.messageContent,
         id: "post_content",
@@ -92597,8 +92628,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           "data-msg-post-name": posts.title,
           "data-msg-for-user-id": posts.user.id,
           "data-msg-for-user-name": posts.user.name,
-          color: "success",
-          className: "col-md-4",
+          className: "col-md-4 bg-redPretty",
           onClick: _this5.modalAskMessage
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-comments icon-4x",
