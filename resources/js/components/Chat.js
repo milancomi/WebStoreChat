@@ -77,7 +77,11 @@ deleteAllMessages(){
 
   axios.get(`${window.siteurl}/delete_messages/${this.state.chatWith}`).then((response) =>
 {
-  console.log(response.data);
+  this.setState({
+    chatFieldVisible: !this.state.chatFieldVisible,
+    users:response.data,
+
+  });
 } 
   );
 } 
@@ -100,7 +104,7 @@ showPostsById(){
       console.log(response.data);
       this.setState({
         messages: response.data.messages,
-        chatWithUser:response.data.user_name
+        chatWithUser:response.data.user
       });
       this.scrollToBottom();
     });
@@ -141,6 +145,7 @@ showPostsById(){
     let i = 1;
     let chatVisibility = this.state.chatFieldVisible ? {display:'none'}  : {}
     let availableUsersAlign = this.state.chatFieldVisible ? 'offset-sm-7' : ''
+    let mailTo = `mailto:${this.state.chatWithUser.email}`;
     return (
       
         <div className="row chatField pr-0">
@@ -148,7 +153,7 @@ showPostsById(){
               <div className="col-sm-12 bg-mango pt-3 pl-1 pr-1">
                 <div className="row mr-0 ml-0">
                   <div className="col-sm-6">
-                  <h3><strong>{this.state.chatWithUser}</strong></h3>
+                  <h3><strong>{this.state.chatWithUser.name}</strong></h3>
 
                   </div>
                   <div className="col-sm-3 justify-content-center "><div className="dropdown">
@@ -158,9 +163,9 @@ showPostsById(){
     <a className="dropdown-item bg-success text-white font-weight-bold ltr-spacing"  onClick={this.showPostsById} href="#"><i className="fa fa-id-card" aria-hidden="true"></i>
  &nbsp; Prikazi oglase</a>
     <a className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing" href="#"><i className="fa fa-phone" aria-hidden="true"></i>
-    &nbsp; br Telefona</a>
-    <a className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing" href="#"> <i className="fa fa-envelope" aria-hidden="true"></i>
-    &nbsp;E-mail</a>
+    &nbsp; {this.state.chatWithUser.phone}</a>
+    <a href={mailTo} className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing"> <i className="fa fa-envelope" aria-hidden="true"></i>
+    &nbsp;{this.state.chatWithUser.email}</a>
     <a className="dropdown-item bg-pretyRed text-white font-weight-bold ltr-spacing" onClick={this.deleteAllMessages} href="#"><i className="fa fa-trash" aria-hidden="true"></i>
     &nbsp; Obrisi poruke</a>
 
@@ -221,7 +226,7 @@ showPostsById(){
                     <li className="list-group-item d-flex align-items-center">
                       <span className="badge badge-primary badge-pill">
                       </span>
-                    Connected with:
+                    Connected with: <strong>{this.state.users.length}</strong>
                     </li>
                   </ul>
             {this.state.users.length == 0

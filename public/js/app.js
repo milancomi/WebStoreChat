@@ -91823,17 +91823,22 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "deleteAllMessages",
     value: function deleteAllMessages() {
+      var _this3 = this;
+
       axios.get("".concat(window.siteurl, "/delete_messages/").concat(this.state.chatWith)).then(function (response) {
-        console.log(response.data);
+        _this3.setState({
+          chatFieldVisible: !_this3.state.chatFieldVisible,
+          users: response.data
+        });
       });
     }
   }, {
     key: "showPostsById",
     value: function showPostsById() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("".concat(window.siteurl, "/posts_by_id/").concat(this.state.chatWith)).then(function (response) {
-        _this3.setState({
+        _this4.setState({
           posts: response.data
         });
       });
@@ -91841,7 +91846,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "msgsById",
     value: function msgsById(user_id) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setState({
         chatFieldVisible: !this.state.chatFieldVisible,
@@ -91850,18 +91855,18 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
         console.log(response.data);
 
-        _this4.setState({
+        _this5.setState({
           messages: response.data.messages,
-          chatWithUser: response.data.user_name
+          chatWithUser: response.data.user
         });
 
-        _this4.scrollToBottom();
+        _this5.scrollToBottom();
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this5 = this;
+      var _this6 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       this.setState({
@@ -91870,27 +91875,27 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("/users_messaged").then(function (response) {
         console.log(response.data);
 
-        _this5.setState({
+        _this6.setState({
           users: response.data
         });
       });
       console.log("LOGED USER" + id);
       var msgChannel = Echo["private"]("messages.".concat(id));
       msgChannel.listen('NewMessageEvent', function (e) {
-        if (_this5.state.chatWith == e.message.from) {
+        if (_this6.state.chatWith == e.message.from) {
           console.log(e);
 
-          _this5.setState({
-            messages: [].concat(_toConsumableArray(_this5.state.messages), [e.message]),
+          _this6.setState({
+            messages: [].concat(_toConsumableArray(_this6.state.messages), [e.message]),
             users: e.users
           });
 
-          _this5.scrollToBottom();
+          _this6.scrollToBottom();
 
           return;
         }
 
-        _this5.setState({
+        _this6.setState({
           users: e.users
         });
       });
@@ -91898,13 +91903,14 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var i = 1;
       var chatVisibility = this.state.chatFieldVisible ? {
         display: 'none'
       } : {};
       var availableUsersAlign = this.state.chatFieldVisible ? 'offset-sm-7' : '';
+      var mailTo = "mailto:".concat(this.state.chatWithUser.email);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row chatField pr-0"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91916,7 +91922,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         className: "row mr-0 ml-0"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-6"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.chatWithUser))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.chatWithUser.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-3 justify-content-center "
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "dropdown"
@@ -91943,13 +91949,13 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-phone",
         "aria-hidden": "true"
-      }), "\xA0 br Telefona"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "dropdown-item bg-secondary text-white font-weight-bold ltr-spacing",
-        href: "#"
+      }), "\xA0 ", this.state.chatWithUser.phone), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: mailTo,
+        className: "dropdown-item bg-secondary text-white font-weight-bold ltr-spacing"
       }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-envelope",
         "aria-hidden": "true"
-      }), "\xA0E-mail"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      }), "\xA0", this.state.chatWithUser.email), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "dropdown-item bg-pretyRed text-white font-weight-bold ltr-spacing",
         onClick: this.deleteAllMessages,
         href: "#"
@@ -91968,7 +91974,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: messages.id
-        }, messages.from == _this6.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, messages.from == _this7.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "ml-3 pl-0 col-sm-8 rounded-right bg-mango border border-dark mb-3"
@@ -92000,7 +92006,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           clear: "both"
         },
         ref: function ref(el) {
-          _this6.messagesEnd = el;
+          _this7.messagesEnd = el;
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-5 pl-0 availableUsersField ".concat(availableUsersAlign)
@@ -92010,10 +92016,10 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         className: "list-group-item d-flex align-items-center"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "badge badge-primary badge-pill"
-      }), "Connected with:")), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
+      }), "Connected with: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.users.length))), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
-            return _this6.msgsById(users.id);
+            return _this7.msgsById(users.id);
           },
           className: "list-group",
           key: users.id
@@ -92034,7 +92040,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         rows: "3",
         overflow: "auto",
         onChange: function onChange(e) {
-          return _this6.handleChangeNewMessageContent(e);
+          return _this7.handleChangeNewMessageContent(e);
         },
         value: this.state.messageContent,
         id: "post_content",

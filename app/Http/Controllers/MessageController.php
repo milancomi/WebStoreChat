@@ -61,9 +61,9 @@ class MessageController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-            $user_name = User::where('id',$id)->first()->name;
+            $user = User::where('id',$id)->first();
             
-            return response()->json(['messages'=>$messages,'user_name'=>$user_name]);
+            return response()->json(['messages'=>$messages,'user'=>$user]);
     }
     public function newMsg(Request $request)
     {
