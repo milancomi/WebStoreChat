@@ -73,7 +73,7 @@ class PostController extends Controller
       $post = $user->posts()->create([
         'title' => $request->title,
         'content' => $request->content,
-        'published' => $request->has('published')
+        'price' => $request->price
       ]);
 
       if($request->hasFile('upload_file')){
@@ -163,7 +163,7 @@ class PostController extends Controller
       $post = Post::findOrFail($id);
       $post->title = $request->title;
       $post->content = $request->content;
-      $post->published = ($request->has('published') ? true : false);
+      $post->price = ($request->has('price') ? true : false);
       $post->save();
 
       return redirect()->route('posts.show', $post->id);

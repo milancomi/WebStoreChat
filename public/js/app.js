@@ -92330,6 +92330,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_image_appear__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-image-appear */ "./node_modules/react-image-appear/src/ReactImageAppear.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -92387,7 +92389,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       posts: [],
       image: "",
       content: "",
-      published: false,
+      price: "",
       upload_file: [],
       file: '',
       imagePreviewUrl: '',
@@ -92405,7 +92407,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     _this.showPostsById = _this.showPostsById.bind(_assertThisInitialized(_this));
     _this.handleChangeTitle = _this.handleChangeTitle.bind(_assertThisInitialized(_this));
     _this.handleChangeContent = _this.handleChangeContent.bind(_assertThisInitialized(_this));
-    _this.handleChangePublished = _this.handleChangePublished.bind(_assertThisInitialized(_this));
+    _this.handleChangePrice = _this.handleChangePrice.bind(_assertThisInitialized(_this));
     _this.handleChangeFile = _this.handleChangeFile.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.loadingStatus = _this.loadingStatus.bind(_assertThisInitialized(_this));
@@ -92504,10 +92506,10 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "handleChangePublished",
-    value: function handleChangePublished(event) {
+    key: "handleChangePrice",
+    value: function handleChangePrice(event) {
       this.setState({
-        published: event.target.value
+        price: event.target.value
       });
     }
   }, {
@@ -92562,7 +92564,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
 
       formData.append("title", this.state.title);
       formData.append("content", this.state.content);
-      formData.append("published", this.state.published);
+      formData.append("price", this.state.price);
       formData.append("upload_file", this.state.upload_file);
       var config = {
         headers: {
@@ -92614,7 +92616,8 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this7 = this,
+          _React$createElement;
 
       var btn = document.getElementById("prikOglase");
 
@@ -92642,10 +92645,12 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        color: "primary",
-        className: "col-md-2 offset-md-5",
+        className: "col-md-3 offset-md-5 mt-2 bg-grayGradient text-dark font-weight-bold",
         onClick: this.modalPost
-      }, "Post +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        "class": "fa fa-newspaper-o",
+        "aria-hidden": "true"
+      }), "\xA0\xA0 Dodaj Oglas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row pt-3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid"
@@ -92666,7 +92671,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           className: "card-title"
         }, posts.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "User:", posts.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: "card-text"
-        }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        }, posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: "card-text"
+        }, "Price:", posts.price), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
           href: "#",
           className: "btn bg-light rounded-circle"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -92692,55 +92699,61 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         isOpen: this.state.modal
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], null, "Add new Post"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], null, "Kreiraj Oglas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group col-sm-6"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "post_title"
-      }, "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Naziv"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        required: true,
         type: "text",
         className: "form-control",
         onChange: this.handleChangeTitle,
         id: "post_title",
         name: "title",
-        placeholder: "Title"
+        placeholder: ""
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group col-sm-6"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "post_price"
+      }, "Cena"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        className: "form-control",
+        onChange: this.handleChangePrice,
+        id: "post_price",
+        name: "price",
+        placeholder: "0"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "post_content"
-      }, "Post Content"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      }, "Opis"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         className: "form-control",
-        rows: "8",
+        rows: "4",
         onChange: this.handleChangeContent,
         id: "post_content",
         name: "content",
-        placeholder: "Write something amazing..."
+        placeholder: "Opisi detaljno proizvod..."
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "checkbox",
-        name: "published",
-        onChange: this.handleChangePublished,
-        value: this.state.published
-      }), "Published")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group col-sm-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: ""
-      }, "Add image"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Dodaj sliku"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", (_React$createElement = {
         type: "file",
         name: "upload_file",
+        className: "form-control-file",
         onChange: function onChange(e) {
           return _this7._handleImageChange(e);
-        },
-        className: "form-control-file",
-        id: "exampleFormControlFile2"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }
+      }, _defineProperty(_React$createElement, "className", "form-control-file"), _defineProperty(_React$createElement, "id", "exampleFormControlFile2"), _React$createElement))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "imgPreview form-group col-sm-8"
       }, $imagePreview))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         onClick: this.handleSubmit,
-        value: "Submit",
+        value: "Sa\u010Duvaj",
         color: "primary",
         className: "btn btn-primary"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {

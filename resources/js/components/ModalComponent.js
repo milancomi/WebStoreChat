@@ -16,7 +16,7 @@ export default class ModalComponent extends React.Component {
       posts: [],
       image: "",
       content: "",
-      published: false,
+      price: "",
       upload_file: [],
       file: '',
       imagePreviewUrl:'',
@@ -40,7 +40,7 @@ export default class ModalComponent extends React.Component {
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeContent = this.handleChangeContent.bind(this);
-    this.handleChangePublished = this.handleChangePublished.bind(this);
+    this.handleChangePrice = this.handleChangePrice.bind(this);
     this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -126,8 +126,8 @@ export default class ModalComponent extends React.Component {
   handleChangeContent(event) {
     this.setState({ content: event.target.value });
   }
-  handleChangePublished(event) {
-    this.setState({ published: event.target.value });
+  handleChangePrice(event) {
+    this.setState({ price: event.target.value });
   }
   handleChangeFile(event) {
     this.setState({ upload_file: event.target.files[0] });
@@ -173,7 +173,7 @@ export default class ModalComponent extends React.Component {
     let formData = new FormData(); //formdata object
     formData.append("title", this.state.title);
     formData.append("content", this.state.content);
-    formData.append("published", this.state.published);
+    formData.append("price", this.state.price);
     formData.append("upload_file", this.state.upload_file);
 
     const config = {
@@ -252,11 +252,11 @@ export default class ModalComponent extends React.Component {
     return (
       <div>
         <Button
-          color="primary"
-          className="col-md-2 offset-md-5"
+          className="col-md-3 offset-md-5 mt-2 bg-grayGradient text-dark font-weight-bold"
           onClick={this.modalPost}
         >
-          Post +
+          <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+          &nbsp;&nbsp; Dodaj Oglas
         </Button>
 
         
@@ -285,7 +285,8 @@ export default class ModalComponent extends React.Component {
                         <p>User:{posts.user.name}</p>
 
                         <p className="card-text">{posts.content}</p>
-                    
+                        <p className="card-text">Price:{posts.price}</p>
+
                         <a href="#" className="btn bg-light rounded-circle">
                           <i
                             className="fa icon-4x text-danger fa-heart"
@@ -319,43 +320,45 @@ export default class ModalComponent extends React.Component {
         </div>
         <Modal isOpen={this.state.modal}>
           <form onSubmit={this.handleSubmit}>
-            <ModalHeader>Add new Post</ModalHeader>
+            <ModalHeader>Kreiraj Oglas</ModalHeader>
 
             <ModalBody>
-              <div className="form-group">
-                <label htmlFor="post_title">Title</label>
+              <div className="row">
+              <div className="form-group col-sm-6">
+                <label htmlFor="post_title">Naziv</label>
                 <input
+                required
                   type="text"
                   className="form-control"
                   onChange={this.handleChangeTitle}
                   id="post_title"
                   name="title"
-                  placeholder="Title"
+                  placeholder=""
                 />
+              </div>
+              <div className="form-group col-sm-6">
+                <label htmlFor="post_price">Cena</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={this.handleChangePrice}
+                  id="post_price"
+                  name="price"
+                  placeholder="0"
+                />
+              </div>
               </div>
 
               <div className="form-group">
-                <label htmlFor="post_content">Post Content</label>
+                <label htmlFor="post_content">Opis</label>
                 <textarea
                   className="form-control"
-                  rows="8"
+                  rows="4"
                   onChange={this.handleChangeContent}
                   id="post_content"
                   name="content"
-                  placeholder="Write something amazing..."
+                  placeholder="Opisi detaljno proizvod..."
                 />
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="published"
-                    onChange={this.handleChangePublished}
-                    value={this.state.published}
-                  />
-                  Published
-                </label>
               </div>
               {/* <div className="form-group mb-3">
                 <label htmlFor="exampleFormControlFile1">Add image</label>
@@ -369,10 +372,11 @@ export default class ModalComponent extends React.Component {
               </div> */}
               <div className="row">
               <div className="form-group col-sm-4">
-                <label htmlFor="">Add image</label>
+                <label htmlFor="">Dodaj sliku</label>
                 <input
                   type="file"
                   name="upload_file"
+                  className="form-control-file"
                   onChange={(e)=>this._handleImageChange(e)}                  className="form-control-file"
                   id="exampleFormControlFile2"
                 />
@@ -386,7 +390,7 @@ export default class ModalComponent extends React.Component {
               <input
                 type="submit"
                 onClick={this.handleSubmit}
-                value="Submit"
+                value="Sačuvaj"
                 color="primary"
                 className="btn btn-primary"
               />

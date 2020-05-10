@@ -17,8 +17,8 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->bigInteger('user_id')->unsigned();
             $table->string('title');
+            $table->string('price');
             $table->text('content');
-            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }
