@@ -92389,6 +92389,8 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       content: "",
       published: false,
       upload_file: [],
+      file: '',
+      imagePreviewUrl: '',
       // MESSAGE STATES
       modalMessage: false,
       messageFrom: props.userId,
@@ -92413,6 +92415,24 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(ModalComponent, [{
+    key: "_handleImageChange",
+    value: function _handleImageChange(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      var reader = new FileReader();
+      var upload_file = e.target.files[0];
+
+      reader.onloadend = function () {
+        _this2.setState({
+          upload_file: upload_file,
+          imagePreviewUrl: reader.result
+        });
+      };
+
+      reader.readAsDataURL(upload_file);
+    }
+  }, {
     key: "loadingStatus",
     value: function loadingStatus(bool) {
       this.props.onChange(bool);
@@ -92438,12 +92458,12 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "showPostsById",
     value: function showPostsById(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("".concat(window.siteurl, "/posts_by_id/").concat(id)).then(function (response) {
         console.log(response);
 
-        _this2.setState({
+        _this3.setState({
           posts: response.data
         });
       });
@@ -92507,7 +92527,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleMessageSubmit",
     value: function handleMessageSubmit(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       event.preventDefault();
       this.loadingStatus(true);
@@ -92524,9 +92544,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       axios.post(uri, form).then(function (response) {
         console.log(response);
 
-        _this3.setAvailableUsers(response.data);
+        _this4.setAvailableUsers(response.data);
 
-        _this3.loadingStatus(false);
+        _this4.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92534,7 +92554,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      var _this4 = this;
+      var _this5 = this;
 
       event.preventDefault();
       this.loadingStatus(true);
@@ -92554,11 +92574,11 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
       var uri = "".concat(window.siteurl, "/posts");
       axios.post(uri, formData, config).then(function (response) {
-        _this4.setState({
+        _this5.setState({
           posts: response.data.postData
         });
 
-        _this4.loadingStatus(false);
+        _this5.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92566,27 +92586,27 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this5 = this;
+      var _this6 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       var postChannel = Echo.channel("posts");
       postChannel.listen(".postE", function (data) {
-        _this5.loadingStatus(true);
+        _this6.loadingStatus(true);
 
         console.log(data.post);
 
-        _this5.setState({
-          posts: [data.post].concat(_toConsumableArray(_this5.state.posts))
+        _this6.setState({
+          posts: [data.post].concat(_toConsumableArray(_this6.state.posts))
         });
 
-        _this5.loadingStatus(false);
+        _this6.loadingStatus(false);
       });
       axios.get("".concat(window.siteurl, "/get_all_posts")).then(function (response) {
-        _this5.setState({
+        _this6.setState({
           posts: response.data
         });
 
-        _this5.loadingStatus(false);
+        _this6.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92594,7 +92614,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var btn = document.getElementById("prikOglase");
 
@@ -92603,8 +92623,22 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           e.preventDefault();
           var user_id = btn.attributes["data-id"].value;
 
-          _this6.showPostsById(user_id);
+          _this7.showPostsById(user_id);
         };
+      }
+
+      var imagePreviewUrl = this.state.imagePreviewUrl;
+      var $imagePreview = null;
+
+      if (imagePreviewUrl) {
+        $imagePreview = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "previewImageInput",
+          src: imagePreviewUrl
+        });
+      } else {
+        $imagePreview = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "previewText"
+        });
       }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
@@ -92649,7 +92683,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           "data-msg-for-user-id": posts.user.id,
           "data-msg-for-user-name": posts.user.name,
           className: "col-md-4 bg-redPretty",
-          onClick: _this6.modalAskMessage
+          onClick: _this7.modalAskMessage
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-comments icon-4x",
           "aria-hidden": "true"
@@ -92688,16 +92722,22 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         onChange: this.handleChangePublished,
         value: this.state.published
       }), "Published")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-3"
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group col-sm-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        htmlFor: "exampleFormControlFile1"
+        htmlFor: ""
       }, "Add image"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "file",
         name: "upload_file",
-        onChange: this.handleChangeFile,
+        onChange: function onChange(e) {
+          return _this7._handleImageChange(e);
+        },
         className: "form-control-file",
-        id: "exampleFormControlFile1"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        id: "exampleFormControlFile2"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "imgPreview form-group col-sm-8"
+      }, $imagePreview))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         onClick: this.handleSubmit,
         value: "Submit",

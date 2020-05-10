@@ -18,6 +18,9 @@ export default class ModalComponent extends React.Component {
       content: "",
       published: false,
       upload_file: [],
+      file: '',
+      imagePreviewUrl:'',
+
       
 
       // MESSAGE STATES
@@ -49,6 +52,22 @@ export default class ModalComponent extends React.Component {
   }
 
   
+  _handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let upload_file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        upload_file: upload_file,
+        imagePreviewUrl: reader.result
+      });
+    }
+
+    reader.readAsDataURL(upload_file)
+  }
+
   loadingStatus(bool) {
     this.props.onChange(bool);
     this.setState({ loading: bool.value });
@@ -205,6 +224,7 @@ export default class ModalComponent extends React.Component {
       });
   }
   render() {
+
     let btn = document.getElementById("prikOglase");
   if(btn !== null)
   {
@@ -215,6 +235,20 @@ export default class ModalComponent extends React.Component {
        this.showPostsById(user_id);
     }
   }
+
+
+
+  let {imagePreviewUrl} = this.state;
+  let $imagePreview = null;
+  if (imagePreviewUrl) {
+    $imagePreview = (<img className="previewImageInput" src={imagePreviewUrl} />);
+  } else {
+    $imagePreview = (<div className="previewText"></div>);
+  }
+
+
+
+
     return (
       <div>
         <Button
@@ -323,7 +357,7 @@ export default class ModalComponent extends React.Component {
                   Published
                 </label>
               </div>
-              <div className="form-group mb-3">
+              {/* <div className="form-group mb-3">
                 <label htmlFor="exampleFormControlFile1">Add image</label>
                 <input
                   type="file"
@@ -332,7 +366,21 @@ export default class ModalComponent extends React.Component {
                   className="form-control-file"
                   id="exampleFormControlFile1"
                 />
+              </div> */}
+              <div className="row">
+              <div className="form-group col-sm-4">
+                <label htmlFor="">Add image</label>
+                <input
+                  type="file"
+                  name="upload_file"
+                  onChange={(e)=>this._handleImageChange(e)}                  className="form-control-file"
+                  id="exampleFormControlFile2"
+                />
               </div>
+              <div className="imgPreview form-group col-sm-8">
+          {$imagePreview}
+        </div>
+        </div>
             </ModalBody>
             <ModalFooter>
               <input

@@ -11023,6 +11023,11 @@ html {
   background: #1e2761;
 }
 
+.previewImageInput {
+  height: 8em;
+  max-height: 8em;
+}
+
 .bg-redPretty {
   background: #8d1c4f;
 }
