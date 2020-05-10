@@ -23,7 +23,6 @@ class Chat extends React.Component {
     this.submitMessage = this.submitMessage.bind(this);
     this.handleChangeNewMessageContent =this.handleChangeNewMessageContent.bind(this);
     this.deleteAllMessages = this.deleteAllMessages.bind(this);
-    this.showPostsById = this.showPostsById.bind(this);
   }
   componentWillReceiveProps (nextProps) {
     if (this.props.users !== nextProps.users) {
@@ -85,15 +84,7 @@ deleteAllMessages(){
 } 
   );
 } 
-showPostsById(){
-  axios.get(`${window.siteurl}/posts_by_id/${this.state.chatWith}`).then((response)=>
-  {
-    this.setState({
-      posts:response.data
-    });
-  });
 
-}
   msgsById(user_id) {
     this.setState({
       chatFieldVisible: !this.state.chatFieldVisible,
@@ -160,7 +151,7 @@ showPostsById(){
   <button className="btn dropdown-toggle font-weight-bold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 <strong> . . .</strong>  </button>
   <div className="dropdown-menu pt-0 pb-0" aria-labelledby="dropdownMenuButton">
-    <a className="dropdown-item bg-success text-white font-weight-bold ltr-spacing"  onClick={this.showPostsById} href="#"><i className="fa fa-id-card" aria-hidden="true"></i>
+    <a data-id={this.state.chatWith} id="prikOglase" className="dropdown-item bg-success text-white font-weight-bold ltr-spacing"  href="#"><i  className="fa fa-id-card" aria-hidden="true"></i>
  &nbsp; Prikazi oglase</a>
     <a className="dropdown-item bg-secondary text-white font-weight-bold ltr-spacing" href="#"><i className="fa fa-phone" aria-hidden="true"></i>
     &nbsp; {this.state.chatWithUser.phone}</a>

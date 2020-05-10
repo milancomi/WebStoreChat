@@ -91756,7 +91756,6 @@ var Chat = /*#__PURE__*/function (_React$Component) {
     _this.submitMessage = _this.submitMessage.bind(_assertThisInitialized(_this));
     _this.handleChangeNewMessageContent = _this.handleChangeNewMessageContent.bind(_assertThisInitialized(_this));
     _this.deleteAllMessages = _this.deleteAllMessages.bind(_assertThisInitialized(_this));
-    _this.showPostsById = _this.showPostsById.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -91833,20 +91832,9 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "showPostsById",
-    value: function showPostsById() {
-      var _this4 = this;
-
-      axios.get("".concat(window.siteurl, "/posts_by_id/").concat(this.state.chatWith)).then(function (response) {
-        _this4.setState({
-          posts: response.data
-        });
-      });
-    }
-  }, {
     key: "msgsById",
     value: function msgsById(user_id) {
-      var _this5 = this;
+      var _this4 = this;
 
       this.setState({
         chatFieldVisible: !this.state.chatFieldVisible,
@@ -91855,18 +91843,18 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("".concat(window.siteurl, "/messages/").concat(user_id)).then(function (response) {
         console.log(response.data);
 
-        _this5.setState({
+        _this4.setState({
           messages: response.data.messages,
           chatWithUser: response.data.user
         });
 
-        _this5.scrollToBottom();
+        _this4.scrollToBottom();
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this6 = this;
+      var _this5 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       this.setState({
@@ -91875,27 +91863,27 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       axios.get("/users_messaged").then(function (response) {
         console.log(response.data);
 
-        _this6.setState({
+        _this5.setState({
           users: response.data
         });
       });
       console.log("LOGED USER" + id);
       var msgChannel = Echo["private"]("messages.".concat(id));
       msgChannel.listen('NewMessageEvent', function (e) {
-        if (_this6.state.chatWith == e.message.from) {
+        if (_this5.state.chatWith == e.message.from) {
           console.log(e);
 
-          _this6.setState({
-            messages: [].concat(_toConsumableArray(_this6.state.messages), [e.message]),
+          _this5.setState({
+            messages: [].concat(_toConsumableArray(_this5.state.messages), [e.message]),
             users: e.users
           });
 
-          _this6.scrollToBottom();
+          _this5.scrollToBottom();
 
           return;
         }
 
-        _this6.setState({
+        _this5.setState({
           users: e.users
         });
       });
@@ -91903,7 +91891,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this6 = this;
 
       var i = 1;
       var chatVisibility = this.state.chatFieldVisible ? {
@@ -91937,8 +91925,9 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         className: "dropdown-menu pt-0 pb-0",
         "aria-labelledby": "dropdownMenuButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        "data-id": this.state.chatWith,
+        id: "prikOglase",
         className: "dropdown-item bg-success text-white font-weight-bold ltr-spacing",
-        onClick: this.showPostsById,
         href: "#"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-id-card",
@@ -91974,7 +91963,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }, this.state.messages.length == 0 ? null : this.state.messages.map(function (messages) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: messages.id
-        }, messages.from == _this7.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, messages.from == _this6.state.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "ml-3 pl-0 col-sm-8 rounded-right bg-mango border border-dark mb-3"
@@ -92006,7 +91995,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           clear: "both"
         },
         ref: function ref(el) {
-          _this7.messagesEnd = el;
+          _this6.messagesEnd = el;
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-5 pl-0 availableUsersField ".concat(availableUsersAlign)
@@ -92019,7 +92008,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
       }), "Connected with: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.users.length))), this.state.users.length == 0 ? null : this.state.users.map(function (users) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           onClick: function onClick() {
-            return _this7.msgsById(users.id);
+            return _this6.msgsById(users.id);
           },
           className: "list-group",
           key: users.id
@@ -92040,7 +92029,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         rows: "3",
         overflow: "auto",
         onChange: function onChange(e) {
-          return _this7.handleChangeNewMessageContent(e);
+          return _this6.handleChangeNewMessageContent(e);
         },
         value: this.state.messageContent,
         id: "post_content",
@@ -92411,6 +92400,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     };
     _this.modalPost = _this.modalPost.bind(_assertThisInitialized(_this));
     _this.modalAskMessage = _this.modalAskMessage.bind(_assertThisInitialized(_this));
+    _this.showPostsById = _this.showPostsById.bind(_assertThisInitialized(_this));
     _this.handleChangeTitle = _this.handleChangeTitle.bind(_assertThisInitialized(_this));
     _this.handleChangeContent = _this.handleChangeContent.bind(_assertThisInitialized(_this));
     _this.handleChangePublished = _this.handleChangePublished.bind(_assertThisInitialized(_this));
@@ -92443,6 +92433,19 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     value: function modalPost() {
       this.setState({
         modal: !this.state.modal
+      });
+    }
+  }, {
+    key: "showPostsById",
+    value: function showPostsById(id) {
+      var _this2 = this;
+
+      axios.get("".concat(window.siteurl, "/posts_by_id/").concat(id)).then(function (response) {
+        console.log(response);
+
+        _this2.setState({
+          posts: response.data
+        });
       });
     }
   }, {
@@ -92504,7 +92507,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleMessageSubmit",
     value: function handleMessageSubmit(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       event.preventDefault();
       this.loadingStatus(true);
@@ -92521,9 +92524,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       axios.post(uri, form).then(function (response) {
         console.log(response);
 
-        _this2.setAvailableUsers(response.data);
+        _this3.setAvailableUsers(response.data);
 
-        _this2.loadingStatus(false);
+        _this3.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92531,7 +92534,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       event.preventDefault();
       this.loadingStatus(true);
@@ -92551,11 +92554,11 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       });
       var uri = "".concat(window.siteurl, "/posts");
       axios.post(uri, formData, config).then(function (response) {
-        _this3.setState({
+        _this4.setState({
           posts: response.data.postData
         });
 
-        _this3.loadingStatus(false);
+        _this4.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92563,27 +92566,27 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this4 = this;
+      var _this5 = this;
 
       var id = document.getElementById("app").attributes["data-user-id"].value;
       var postChannel = Echo.channel("posts");
       postChannel.listen(".postE", function (data) {
-        _this4.loadingStatus(true);
+        _this5.loadingStatus(true);
 
         console.log(data.post);
 
-        _this4.setState({
-          posts: [data.post].concat(_toConsumableArray(_this4.state.posts))
+        _this5.setState({
+          posts: [data.post].concat(_toConsumableArray(_this5.state.posts))
         });
 
-        _this4.loadingStatus(false);
+        _this5.loadingStatus(false);
       });
       axios.get("".concat(window.siteurl, "/get_all_posts")).then(function (response) {
-        _this4.setState({
+        _this5.setState({
           posts: response.data
         });
 
-        _this4.loadingStatus(false);
+        _this5.loadingStatus(false);
       })["catch"](function (error) {
         console.log("error" + error);
       });
@@ -92591,7 +92594,18 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
+
+      var btn = document.getElementById("prikOglase");
+
+      if (btn !== null) {
+        btn.onclick = function (e) {
+          e.preventDefault();
+          var user_id = btn.attributes["data-id"].value;
+
+          _this6.showPostsById(user_id);
+        };
+      }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "primary",
@@ -92635,7 +92649,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           "data-msg-for-user-id": posts.user.id,
           "data-msg-for-user-name": posts.user.name,
           className: "col-md-4 bg-redPretty",
-          onClick: _this5.modalAskMessage
+          onClick: _this6.modalAskMessage
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-comments icon-4x",
           "aria-hidden": "true"

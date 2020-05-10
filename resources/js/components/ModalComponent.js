@@ -33,7 +33,8 @@ export default class ModalComponent extends React.Component {
 
     this.modalPost = this.modalPost.bind(this);
     this.modalAskMessage = this.modalAskMessage.bind(this);
-  
+    this.showPostsById = this.showPostsById.bind(this);
+
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeContent = this.handleChangeContent.bind(this);
     this.handleChangePublished = this.handleChangePublished.bind(this);
@@ -66,6 +67,18 @@ export default class ModalComponent extends React.Component {
       modal: !this.state.modal,
     });
   }
+  showPostsById(id){
+
+    axios.get(`${window.siteurl}/posts_by_id/${id}`).then((response)=>
+    {
+      console.log(response);
+      this.setState({
+        posts:response.data
+      });
+    });
+  
+  }
+
   modalAskMessage(event) {
     // toogle prevention
     if(typeof event.target.attributes['data-msg-post-id'] !== "undefined" )
@@ -168,6 +181,7 @@ export default class ModalComponent extends React.Component {
   }
 
   componentDidMount() {
+
     const id = document.getElementById("app").attributes["data-user-id"].value;
 
     let postChannel = Echo.channel("posts");
@@ -191,6 +205,16 @@ export default class ModalComponent extends React.Component {
       });
   }
   render() {
+    let btn = document.getElementById("prikOglase");
+  if(btn !== null)
+  {
+    btn.onclick = (e) =>{
+      e.preventDefault();
+      let user_id = btn.attributes["data-id"].value;
+
+       this.showPostsById(user_id);
+    }
+  }
     return (
       <div>
         <Button
