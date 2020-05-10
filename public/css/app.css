@@ -11036,6 +11036,10 @@ html {
   background-image: linear-gradient(to left, #b4a0a4, #d5c9cd, #E9E9E9, #ffffff);
 }
 
+.cntrAlgn {
+  text-align: center;
+}
+
 .stickyNavbar {
   position: -webkit-sticky;
   position: sticky;

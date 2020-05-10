@@ -255,7 +255,7 @@ export default class ModalComponent extends React.Component {
           className="col-md-3 offset-md-5 mt-2 bg-grayGradient text-dark font-weight-bold"
           onClick={this.modalPost}
         >
-          <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+          <i className="fa fa-newspaper-o" aria-hidden="true"></i>
           &nbsp;&nbsp; Dodaj Oglas
         </Button>
 
@@ -281,19 +281,8 @@ export default class ModalComponent extends React.Component {
                       ) : null}
                       <div className="card-body">
 
-                        <h5 className="card-title">{posts.title}</h5>
-                        <p>User:{posts.user.name}</p>
-
-                        <p className="card-text">{posts.content}</p>
-                        <p className="card-text">Price:{posts.price}</p>
-
-                        <a href="#" className="btn bg-light rounded-circle">
-                          <i
-                            className="fa icon-4x text-danger fa-heart"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      {typeof posts.files[0] !== "undefined" ? (
+                        <h1>{posts.user.name}</h1>
+                        {typeof posts.files[0] !== "undefined" ? (
                         <ReactImageAppear
                           placeholder
                           src={posts.files[0].file_title}
@@ -301,15 +290,22 @@ export default class ModalComponent extends React.Component {
                           placeholderClass="mx-auto d-block"
                         />
                       ) : null}
+                         <h3 className="card-title cntrAlgn">{posts.title}</h3>
+
+                        <p className="card-text">Opis: {posts.content}</p>
+                        <p className="card-text">Cena: <strong>{posts.price} </strong></p>
+
+        
+        
                         <Button
                         data-msg-post-id={posts.id}
                         data-msg-post-name={posts.title}
                         data-msg-for-user-id={posts.user.id}
                         data-msg-for-user-name={posts.user.name}
-                          className="col-md-4 bg-redPretty"
+                          className="col-md-3 bg-redPretty"
                           onClick={this.modalAskMessage}
                         >
-                         <i className="fa fa-comments icon-4x" aria-hidden="true"></i>  with:  {posts.user.name}   
+                         <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
                         </Button>
                   </div>
                   </div>
@@ -404,18 +400,18 @@ export default class ModalComponent extends React.Component {
         {/* modal message */}
         <Modal isOpen={this.state.modalMessage}>
           <form onSubmit={this.handleMessageSubmit}>
-            <ModalHeader>Message for: <strong>{this.state.messageForUserName} {this.state.messageForUserId}</strong></ModalHeader>
+            <ModalHeader>Poruka za: <strong>{this.state.messageForUserName} {this.state.messageForUserId}</strong></ModalHeader>
             <ModalBody>
-              <h4>About: <strong> {this.state.messageForPostName} {this.state.messageForPostId}</strong></h4>
+              <h4>Proizvod: <strong> {this.state.messageForPostName} {this.state.messageForPostId}</strong></h4>
     <div className="form-group">
-                <label htmlFor="message">Message: </label>
+                <label htmlFor="message">Poruka: </label>
                 <textarea
                   className="form-control"
                   rows="6"
                   id="message"
                   onChange={this.handleChangeMessage}
                   name="message"
-                  placeholder="Write question"
+                  placeholder="Postavi pitanja"
                 />
               </div>
               <input
@@ -441,7 +437,7 @@ export default class ModalComponent extends React.Component {
               <input
                 type="submit"
                 onClick={this.handleMessageSubmit}
-                value="Submit"
+                value="pošalji"
                 color="primary"
                 className="btn btn-primary"
               />

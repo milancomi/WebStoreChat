@@ -81,11 +81,14 @@
                                         {{ __('Logout') }}
                                     </a>
     <a class="dropdown-item" id="deactivate" data-id={{auth()->user()->id}}
-                                    >Deactivate account
+                                    >Obriši nalog
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" id="change" data-id={{auth()->user()->id}}
+                                        >Podešavanja Naloga
+                                        </a>
                                 </div>
                             </li>
                         @endguest
