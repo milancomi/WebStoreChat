@@ -99,8 +99,7 @@ class MessageController extends Controller
             'to' => $to_user,
             'text' => $message,
         ]);
-       $users = [];
-        
+        $users =  $this->allMessagedUsersInverseForBroadcast($to_user);
         broadcast(new NewMessageEvent($msg,$users));
         return response()->json($msg);
     }

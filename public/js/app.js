@@ -91879,13 +91879,11 @@ var Chat = /*#__PURE__*/function (_React$Component) {
           });
 
           _this5.scrollToBottom();
-
-          return;
+        } else {
+          _this5.setState({
+            users: e.users
+          });
         }
-
-        _this5.setState({
-          users: e.users
-        });
       });
     }
   }, {
@@ -91978,7 +91976,7 @@ var Chat = /*#__PURE__*/function (_React$Component) {
         }, messages.created_at))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row pr-0"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-sm-3 justify-content-md-center pt-23"
+          className: "col-sm-4 justify-content-md-center pt-23"
         }, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "timestamp text-center align-bottom font-italic"
         }, messages.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92383,6 +92381,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       // APP depended states
       loading: props.loading,
       users: [],
+      user_id: props.userId,
       // POST STATES
       modal: false,
       title: "",
@@ -92462,12 +92461,12 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
     value: function showPostsById(id) {
       var _this3 = this;
 
-      axios.get("".concat(window.siteurl, "/posts_by_id/").concat(id)).then(function (response) {
-        console.log(response);
-
+      axios.post("".concat(window.siteurl, "/posts_by_id/").concat(id)).then(function (response) {
         _this3.setState({
-          posts: response.data
+          posts: response.data.postData
         });
+      })["catch"](function (error) {
+        console.log("error" + error);
       });
     }
   }, {
@@ -92624,7 +92623,9 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       if (btn !== null) {
         btn.onclick = function (e) {
           e.preventDefault();
+          console.log("BTN RADI");
           var user_id = btn.attributes["data-id"].value;
+          console.log(user_id);
 
           _this7.showPostsById(user_id);
         };
@@ -92665,7 +92666,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           type: "button",
           className: "close",
           "data-dismiss": "alert"
-        }, "\xD7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "New Post")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, "\xD7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Nov oglas")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "card-body"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, posts.user.name), typeof posts.files[0] !== "undefined" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_image_appear__WEBPACK_IMPORTED_MODULE_2__["default"], {
           placeholder: true,
@@ -92678,7 +92679,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
           className: "card-text"
         }, "Opis: ", posts.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           className: "card-text"
-        }, "Cena: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, posts.price, " ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+        }, "Cena: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, posts.price, " ")), posts.user.id == _this7.state.user_id ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
           "data-msg-post-id": posts.id,
           "data-msg-post-name": posts.title,
           "data-msg-for-user-id": posts.user.id,
@@ -92759,9 +92760,7 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
         onSubmit: this.handleMessageSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], null, "Poruka za: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.state.messageForUserName, " ", this.state.messageForUserId)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Proizvod: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " ", this.state.messageForPostName, " ", this.state.messageForPostId)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        htmlFor: "message"
-      }, "Poruka: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         className: "form-control",
         rows: "6",
         id: "message",
@@ -92786,13 +92785,13 @@ var ModalComponent = /*#__PURE__*/function (_React$Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalFooter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         onClick: this.handleMessageSubmit,
-        value: "po\u0161alji",
+        value: "Po\u0161alji",
         color: "primary",
         className: "btn btn-primary"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         color: "danger",
         onClick: this.modalAskMessage
-      }, "Cancel")))));
+      }, "Odustani")))));
     }
   }]);
 

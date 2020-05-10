@@ -122,12 +122,14 @@ deleteAllMessages(){
 
         });
         this.scrollToBottom();
-        return;
+
+      } else{
+    this.setState({
+            users:e.users
+          });
+
       }
-      this.setState({
-        users:e.users
-      });
-    });
+         });
 
   }
 
@@ -188,7 +190,7 @@ deleteAllMessages(){
                         </div>
                       ) : (
                         <div className="row pr-0">
-                          <div className="col-sm-3 justify-content-md-center pt-23">
+                          <div className="col-sm-4 justify-content-md-center pt-23">
                             {" "}  
                             <span className="timestamp text-center align-bottom font-italic">{messages.created_at}</span>
                           </div>

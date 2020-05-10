@@ -9,6 +9,7 @@ export default class ModalComponent extends React.Component {
       // APP depended states
       loading: props.loading,
       users:[],
+      user_id:props.userId,
 
       // POST STATES
       modal: false,
@@ -88,14 +89,12 @@ export default class ModalComponent extends React.Component {
   }
   showPostsById(id){
 
-    axios.get(`${window.siteurl}/posts_by_id/${id}`).then((response)=>
-    {
-      console.log(response);
-      this.setState({
-        posts:response.data
-      });
+    axios.post(`${window.siteurl}/posts_by_id/${id}`).then((response) => {
+      this.setState({ posts: response.data.postData });
+    })
+    .catch(function(error) {
+      console.log("error" + error);
     });
-  
   }
 
   modalAskMessage(event) {
@@ -230,8 +229,9 @@ export default class ModalComponent extends React.Component {
   {
     btn.onclick = (e) =>{
       e.preventDefault();
+      console.log("BTN RADI")
       let user_id = btn.attributes["data-id"].value;
-
+      console.log(user_id);
        this.showPostsById(user_id);
     }
   }
@@ -276,7 +276,7 @@ export default class ModalComponent extends React.Component {
                           >
                             ×
                           </button>
-                          <strong>New Post</strong>
+                          <strong>Nov oglas</strong>
                         </div>
                       ) : null}
                       <div className="card-body">
@@ -296,7 +296,9 @@ export default class ModalComponent extends React.Component {
                         <p className="card-text">Cena: <strong>{posts.price} </strong></p>
 
         
-        
+        {posts.user.id == this.state.user_id ?
+                 null
+                        :
                         <Button
                         data-msg-post-id={posts.id}
                         data-msg-post-name={posts.title}
@@ -306,7 +308,7 @@ export default class ModalComponent extends React.Component {
                           onClick={this.modalAskMessage}
                         >
                          <i className="fa fa-comments icon-4x" aria-hidden="true"></i>
-                        </Button>
+                        </Button>                        }
                   </div>
                   </div>
                   </div>
@@ -404,7 +406,6 @@ export default class ModalComponent extends React.Component {
             <ModalBody>
               <h4>Proizvod: <strong> {this.state.messageForPostName} {this.state.messageForPostId}</strong></h4>
     <div className="form-group">
-                <label htmlFor="message">Poruka: </label>
                 <textarea
                   className="form-control"
                   rows="6"
@@ -437,12 +438,12 @@ export default class ModalComponent extends React.Component {
               <input
                 type="submit"
                 onClick={this.handleMessageSubmit}
-                value="pošalji"
+                value="Pošalji"
                 color="primary"
                 className="btn btn-primary"
               />
               <Button color="danger" onClick={this.modalAskMessage}>
-                Cancel
+                Odustani
               </Button>
             </ModalFooter>
           </form>

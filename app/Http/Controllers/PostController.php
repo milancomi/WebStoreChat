@@ -40,8 +40,8 @@ class PostController extends Controller
 
     public function postsById($id)
     {
-      $posts = Post::where('user_id',$id)->get();
-      return response()->json($posts);
+      $posts = Post::where('user_id',$id)->with('files')->with('user')->get();
+      return response()->json(['postData'=>$posts]);
     }
     
     /**
