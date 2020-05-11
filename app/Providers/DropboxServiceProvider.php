@@ -36,9 +36,7 @@ class DropboxServiceProvider extends ServiceProvider
             $client = new DropboxClient(
                 $config['authorizationToken']
             );
-            // curl https://api.dropbox.com/1/account/info -H "Authorization:Bearer N1FZ-12QYHAAAAAAAAAAFUl7D-qbbUW1FwWmKtt1ts15dDa5AUcqkCxhF_sQSLqa"
 
-            // Adapter Strategy / Merge interfaces/ Laracast
 
             return new Filesystem(new DropboxAdapter($client));
         });
