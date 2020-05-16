@@ -192,3 +192,17 @@ Route::post('/new_message_chat','MessageController@newMsgChat');
 
 Route::get('/delete_messages/{id}','MessageController@deleteAllMsgsById');
 Route::post('/posts_by_id/{id}','PostController@postsById');
+
+
+/**
+Type Crud
+ */
+Route::resource('/types', 'PostTypeController');
+// END POSTS TYPE
+
+
+/**
+SubType Crud
+ */
+Route::resource('/sub_types', 'PostSubTypeController');
+// END POSTS SUB TYPE

@@ -84,7 +84,7 @@ background: linear-gradient(to top, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Fir
   }
   .chatField
   {
-    height: 80vh !important;
+    // height: 80vh !important;
   }
 
   // .availableUsersField{
@@ -117,8 +117,8 @@ background: linear-gradient(to top, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Fir
   {
     overflow: auto; 
     background-image: linear-gradient(to bottom,#b4a0a4,#d5c9cd, #E9E9E9,#ffffff);
-    height:75vh;
-    max-height:75vh;
+    height:60vh;
+    max-height:60vh;
   }
   .mt-05{
     margin-top: -0.5rem;
